@@ -9,8 +9,6 @@ define(function () {
 
     var controllers = {};
 
-
-
     controllers.home = function ($scope, $rootScope, $cookies) {
         delete $rootScope.currentUser;
         if($cookies.get("user-name")){
@@ -19,6 +17,21 @@ define(function () {
     };
     controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
 
+    controllers.qrCode = function ($scope , Device) {
+//        require(['qrcode'], function() {
+//            //      var currentUser = {"userName": "Bob" , "id": 12345}
+//            //      var currentUser = $scope.currentUser
+//                var QRCode = new QRCode(document.getElementById("QRCode"), {
+//                width : 100,
+//                height : 100
+//               });
+//                            QRCode.makeCode("Bob");
+//            }
+//        );
+    console.log("Make qr code")
+    }
+
+    controllers.qrCode.$inject = ["$scope", "Device"];
 
     controllers.login = function ($rootScope, $scope, $routeParams, $http, $window, $route, $location) {
         $scope.message=$routeParams.message;
@@ -54,11 +67,6 @@ define(function () {
     }
     controllers.register.$inject = ['$scope','$location','User'];
 
-
-
-
-
-
     /**
      * Interceptors for the controllers
      */
@@ -73,13 +81,6 @@ define(function () {
                 $location.path('login/').search({'redirect':nextPath, 'message': msg});
             }
         }
-
-
-
-
-
-
-
     }
 
     return controllers;
