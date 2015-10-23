@@ -44,7 +44,7 @@ require(['angular', './controllers', './directives', './filters', './services', 
                 $routeProvider.when('/register', {templateUrl: 'partials/register.html', controller: controllers.home});
                 $routeProvider.when('/myAccount', {templateUrl: 'partials/account.html', controller: controllers.home});
                 $routeProvider.when('/devRegQR', {templateUrl: 'partials/devRegQR.html', controller: controllers.qrCode});
-                $routeProvider.when('/devList', {templateUrl: 'partials/devList.html', controller: controllers.home});
+                $routeProvider.when('/devList', {templateUrl: 'partials/devList.html', controller: controllers.devList});
                 $routeProvider.otherwise({redirectTo: '/login'});
             }]).
             run(function($rootScope, $location) {

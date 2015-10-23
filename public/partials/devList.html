@@ -5,25 +5,25 @@
         <div class="row">
 
             <div class="col-sm-6 " id="steps">
-                <h2>Step 1 <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs"></i></h2>
+                <h2>Phone <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs" > </i></h2>
 
-                <h2>Step 2 <i class="fa fa-microphone"></i> <i class="fa fa-fw fa-cogs"></i></h2>
+                <h2>Beacon <i class="fa fa-microphone"></i> <i class="fa fa-fw fa-cogs"></i></h2>
 
-                <h2>Step 3 <i class="fa fa-map-marker"></i> <i class="fa fa-fw fa-cogs"></i></h2>
+                <!--<h2>Step 3 <i class="fa fa-map-marker"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
 
-                <h2>step 4 <i class="fa fa-wifi"></i>      <i class="fa fa-fw fa-cogs"></i></h2>
+                <!--<h2>step 4 <i class="fa fa-wifi"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
 
-                <h2>step 5 <i class="fa fa-apple"></i> <i class="fa fa-fw fa-cogs"></i></h2>
+                <!--<h2>step 5 <i class="fa fa-apple"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
             </div>
             <div class="col-sm-6">
                 <div id="success" style="display: none">
                     <h2>"Successfully signed in"</h2>
 
-                    <h3>"4 out of 5 steps succeeded :) "</h3>
+                    <h3>"2 out of 2 devices authenticated "</h3>
                 </div>
                 <div id="fail" style="display: none">
                     <h2>"Failed to authenticate"</h2>
-                    <h3>"4 out of 5 steps failed :("</h3>
+                    <h3>"1 out of 2 steps failed :("</h3>
                     <h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>
                 </div>
             </div>
@@ -31,10 +31,6 @@
 
     </div>
 </section>
-
-
-
-
 
 <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
 <div class="scroll-top page-scroll visible-xs visible-sm">
@@ -44,7 +40,6 @@
 </div>
 
 <!-- Portfolio Modals -->
-
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
@@ -76,10 +71,10 @@
             }
         }
     }
-    var m = 5
+    var m = 2
     //int n= n out m
     function authCheck(n, m) {
-        m = m || 5
+        m = m || 2
         var steps = $("#steps");
         rows = steps.children()
         var x = []
@@ -93,6 +88,7 @@
                     } else {
                         x[i].find('.fa-fw').removeClass('fa-cogs')
                         x[i].find('.fa-fw').addClass('fa-remove')
+                        x[i].find('.fa-fw').addClass('fa-check-square')
                     }
                 }else{
                     if ( i <n) {
@@ -101,6 +97,7 @@
                     } else {
                         x[i].find('.fa-fw').removeClass('fa-cogs')
                         x[i].find('.fa-fw').addClass('fa-remove')
+                        x[i].find('.fa-fw').addClass('fa-check-square')
                     }
                 }
             }, 1000 * i)

@@ -17,6 +17,17 @@ define(function () {
     };
     controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
 
+    controllers.devList = function ($scope, $cookies,$websocket ) {
+          var ws = $websocket.$new('ws://localhost:9000/ws');
+          ws.$on('$open', function () {
+            ws.$emit('hello', 'world'); // it sends the event 'hello' with data 'world'
+          })
+          .$on('incoming event', function (message) { // it listents for 'incoming event'
+            console.log('something incoming from the server: ' + message);
+          });
+        };
+    controllers.devList.$inject = ['$scope', '$cookies' ];
+
     controllers.qrCode = function ($scope , Device) {
 //        require(['qrcode'], function() {
 //            //      var currentUser = {"userName": "Bob" , "id": 12345}
