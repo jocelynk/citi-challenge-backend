@@ -3,14 +3,29 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET         /                       controllers.Application.index
 
 
-GET    /api/device                  controllers.API.getDevice
-POST   /api/device                  controllers.API.createDevice
+GET         /api/device             controllers.API.getDevice
+POST        /api/device             controllers.API.createDevices
+
+POST        /api/user/login         controllers.API.login()
+GET         /api/user/logout        controllers.API.logout()
+
+#POST          /api/user                  controllers.API.createUser()
+GET           /api/user/:userName        controllers.API.getUser(userName:String)
+#PUT           /api/user/:username        controllers.API.updateUser()
+#DELETE        /api/user/:username        controllers.API.deleteUser()
+
+
+
+GET         /ws                         controllers.Application.ws()
+
+
+
+
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /*file               controllers.Assets.at(path="/public", file)
+GET         /*file                  controllers.Assets.at(path="/public", file)
 
-    

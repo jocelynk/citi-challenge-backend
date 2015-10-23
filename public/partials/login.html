@@ -5,30 +5,38 @@
         </div>
         <div class="row" >
             <div class="col-md-offset-1 col-md-9 " id="steps">
-                <form class="form-signin" method="get" action="/#/myAccount">
+                <form class="form-signin"ng-submit="authenticate()">
+                    <fieldset>
                     <h2 class="form-signin-heading">Please sign in</h2>
 
-                    <label for="inputEmail" class="sr-only">Username</label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="username" required="" autofocus="">
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <div> <span style="color : black">please type: </span> <span style="font-size : 1.2 em">
-                                This is an awesome pretotype :)</span>  </div>
-                    <div id="msg" style="display : none ; color : yellow">
-                        <i class="fa fa-2x fa-keyboard-o"></i> <img src="img/loadingBlack.gif" height="32px">
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label" for="userName">username</label>
+                        <div class="col-md-4">
+                            <input id="userName" name="userName" type="text" placeholder="username" class="form-control input-md" ng-model="user.userName">
+                        </div>
                     </div>
-                    <input type="text" id="inputPassword" class="form-control" placeholder="my special sentence" required="">
+
+                    <!-- Password input-->
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label" for="password">Password</label>
+                        <div class="col-md-4">
+                            <input id="password" name="password" type="password" placeholder="password" class="form-control input-md" ng-model="user.password">
+                        </div>
+                    </div>
+
+
                     <div class="checkbox">
                         <label>
                             <input id='checkbox' type="checkbox" value="remember-me"> Remember me
                         </label>
                     </div>
 
-                    <a id='link' href="/#/myAccount" class="btn btn-outline" style="color : white">
+                    <button type="submit" class="btn btn-outline" style="color : white">
                         Sign in
-                    </a>
+                    </button>
                     <a class="btn btn-outline" style="border-color:cadetblue; color:cadetblue" href="/#/register"> Register</a>
-
-
+                    </fieldset>
+                    {{message}}
                 </form>
             </div>
         </div>

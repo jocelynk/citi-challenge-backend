@@ -1,14 +1,18 @@
 package controllers;
 
 
+import dto.DevicesDto;
 import exception.RESTException;
 import model.Device;
+import model.Login;
 import model.User;
 import org.bson.Document;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import service.DeviceService;
+import service.UserService;
 
 import static play.data.Form.form;
 
@@ -18,16 +22,57 @@ import static play.data.Form.form;
 public class API extends Controller {
 
     static DeviceService devService = new DeviceService();
+    static UserService userService=new UserService();
 
 
-    public static Result createDevice() {
-        User u = extract(User.class);
-        Device d = validateForModel(Device.class);
-        Document doc = devService.createDevice(d);
-        return getResponse(doc, "error");
+    public static Result createDevices() {
+        DevicesDto devs = extract(DevicesDto.class);
+        User user=new User();
+        user.setPassiveAuth(true);
+        userService.updateUserById(devs.getUserId(),user);
+        Document doc = devService.createDevices(devs.getDevices());
+        return getResponse(doc, "error creating devices");
+    }
+
+    public static Result getUser(String userName){
+        return getResponse(UserService.asDocument(userService.getUser(userName)), "error getting user");
+    }
+
+
+
+    public static Result login() {
+        Form<Login> loginForm = form(Login.class).bindFromRequest();
+        String userName = loginForm.get().userName;
+        String pass = loginForm.get().password;
+
+        User user = userService.authenticate(userName, pass);
+        //if success
+        session().clear();
+        session("userName", user.getUserName());
+        response().setCookie("userName", user.getUserName());
+        user.setPassword(null);
+        return ok(Json.toJson(user));
+    }
+
+    public static Result logout() {
+        session().clear();
+        response().discardCookie("user-name");
+        return redirect(
+            routes.Application.index()
+        );
     }
 
     private static <T> T extract(Class<T> modelType) {
+        T model = null;
+        try {
+            model = Json.fromJson(request().body().asJson(), modelType);
+        } catch (IllegalStateException ex) {
+            throw new RESTException(ex.getMessage());
+        }
+        return model;
+    }
+
+    private static <T> T extract(Json json, Class<T> modelType) {
         T model = null;
         try {
             model = Json.fromJson(request().body().asJson(), modelType);
@@ -67,4 +112,6 @@ public class API extends Controller {
     public static Result getDevice() {
         return play.mvc.Results.TODO;
     }
+
+
 }

@@ -14,7 +14,7 @@ define(function () {
     controllers.home = function ($scope, $rootScope, $cookies) {
         delete $rootScope.currentUser;
         if($cookies.get("user-name")){
-            $rootScope.currentUser={name:$cookies.get("user-name")}
+            $rootScope.currentUser={name:$cookies.get("userName")}
         }
     };
     controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
@@ -23,8 +23,14 @@ define(function () {
     controllers.login = function ($rootScope, $scope, $routeParams, $http, $window, $route, $location) {
         $scope.message=$routeParams.message;
         var redirect  =$routeParams.redirect;
-        redirect= redirect || "/";
-        var action="user/login?redirect="+redirect;
+        redirect= redirect || "/myAccount";
+        var action="api/user/login?redirect="+redirect;
+
+        $scope.$watch("user.userName", function(newValue, oldValue) {
+            if ($scope.userName.length > 3) {
+                var user=User.get({userName: $scope.user.userName});
+            }
+        });
 
         $scope.authenticate=function(){
             var user = $scope.user;
@@ -33,7 +39,7 @@ define(function () {
                     $location.path(redirect);
                     $route.reload();
                     delete $rootScope.currentUser;
-                    $rootScope.currentUser={name:response.data.name}
+                    $rootScope.currentUser=response.data
                 },
                 function error(error){
                     $scope.message=error;
@@ -42,7 +48,7 @@ define(function () {
         }
 
     }
-    controllers.login.$inject = ['$rootScope', '$scope','$routeParams', '$http', '$window','$route', '$location'];
+    controllers.login.$inject = ['$rootScope', '$scope','$routeParams', '$http', '$window','$route', '$location', 'User'];
 
     controllers.register = function ($scope, $location, User) {
         $scope.createUser = function () {
