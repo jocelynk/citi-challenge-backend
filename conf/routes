@@ -5,6 +5,11 @@
 # Home page
 GET     /                           controllers.Application.index
 
+
+GET    /api/device                  controllers.API.getDevice
+POST   /api/device                  controllers.API.createDevice
+
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file               controllers.Assets.at(path="/public", file)
 

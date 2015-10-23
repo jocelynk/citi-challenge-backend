@@ -50,4 +50,12 @@ public class User extends BaseModel{
     public void setMobile(Integer mobile) {
         this.mobile = mobile;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
