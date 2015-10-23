@@ -17,17 +17,17 @@ import static play.data.Form.form;
  */
 public class API extends Controller {
 
-    DeviceService devService = new DeviceService();
+    static DeviceService devService = new DeviceService();
 
 
-    public Result createDevice() {
+    public static Result createDevice() {
         User u = extract(User.class);
         Device d = validateForModel(Device.class);
         Document doc = devService.createDevice(d);
         return getResponse(doc, "error");
     }
 
-    private <T> T extract(Class<T> modelType) {
+    private static <T> T extract(Class<T> modelType) {
         T model = null;
         try {
             model = Json.fromJson(request().body().asJson(), modelType);
@@ -38,13 +38,15 @@ public class API extends Controller {
     }
 
 
-    private Result getResponse(Document doc, String errorMsg) {
+    private static Result getResponse(Document doc, String errorMsg) {
         if (doc != null) {
             String id = doc.get("_id").toString();
             if(id==null){
                 throw new RESTException("error creating device");
             }
-            return  ok(Json.newObject().put("id", id));
+            doc.put("id",id);
+            doc.remove("_id");
+            return  ok(Json.toJson(doc));
         } else {
             return badRequest(errorMsg);
         }
@@ -62,4 +64,7 @@ public class API extends Controller {
     }
 
 
+    public static Result getDevice() {
+        return play.mvc.Results.TODO;
+    }
 }

@@ -1,12 +1,13 @@
+//import play.sbt.routes.RoutesKeys._
+
 name := "citiauth"
 
 version := "1.0"
 
-lazy val `citiauth` = (project in file(".")).enablePlugins(PlayJava)
+lazy val `citiauth` =  (project in file(".")).enablePlugins(PlayJava)
 
 scalaVersion := "2.11.6"
 
-libraryDependencies ++= Seq( javaJdbc , javaEbean , cache , javaWs )
 
 libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4-1202-jdbc42",
@@ -20,5 +21,9 @@ libraryDependencies ++= Seq(
   "commons-collections" % "commons-collections" % "3.2.1",
   "org.jongo" % "jongo" % "1.2"
 )
+
+
+//routesGenerator := InjectedRoutesGenerator
+
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
