@@ -7,7 +7,7 @@
             <div class="col-sm-6 " id="steps">
                 <h2>Phone <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs" > </i></h2>
 
-                <h2>Beacon <i class="fa fa-microphone"></i> <i class="fa fa-fw fa-cogs"></i></h2>
+                <h2>Beacon <i class="fa fa-ticket"></i> <i class="fa fa-fw fa-cogs"></i></h2>
 
                 <!--<h2>Step 3 <i class="fa fa-map-marker"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
 
@@ -22,9 +22,9 @@
                     <h3>"2 out of 2 devices authenticated "</h3>
                 </div>
                 <div id="fail" style="display: none">
-                    <h2>"Failed to authenticate"</h2>
-                    <h3>"1 out of 2 steps failed :("</h3>
-                    <h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>
+                    <h2>"Successfully Authenticated"</h2>
+                    <h3>"2 out of 2 steps passed :)"</h3>
+                    <!--<h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>-->
                 </div>
             </div>
         </div>
@@ -112,7 +112,7 @@
             } else {
                 $('#fail').show();
             }
-        }, 5000)
+        }, 2000)
     }
     $(authCheck(getQueryStringParams('n')))
     $(success())

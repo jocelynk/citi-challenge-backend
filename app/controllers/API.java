@@ -57,7 +57,7 @@ public class API extends Controller {
 
     public static Result logout() {
         session().clear();
-        response().discardCookie("user-name");
+        response().discardCookie("userName");
         return redirect(
             routes.Application.index()
         );
