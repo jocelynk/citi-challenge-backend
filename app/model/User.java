@@ -1,30 +1,42 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import play.data.validation.Constraints;
 
 /**
  * Created by sasinda on 10/15/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class User extends BaseModel{
 
     private String userId;
     @Constraints.Required
-    private String name;
+    private String userName;
     @Constraints.Required
     private String email;
     @Constraints.Required
     private String password;
 
+    private boolean passiveAuth;
+
     private Integer mobile;
 
-    public String getName() {
-        return name;
+
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+        this.userId=id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
@@ -57,5 +69,13 @@ public class User extends BaseModel{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isPassiveAuth() {
+        return passiveAuth;
+    }
+
+    public void setPassiveAuth(boolean passiveAuth) {
+        this.passiveAuth = passiveAuth;
     }
 }

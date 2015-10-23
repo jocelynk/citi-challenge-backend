@@ -11,6 +11,14 @@ public class Device {
     public String id;
     @Constraints.Required
     public String deviceId;
-    @Constraints.Required
-    public String userId;
+    //beacon, smart phone
+//  @Constraints.Required
+    public String type;
+    //apple iphone 6s, glaxy S5 etc
+    public String model;
+
+    public String name;
+
+    public User user;
+
 }
