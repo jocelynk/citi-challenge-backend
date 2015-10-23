@@ -1,9 +1,14 @@
+<script type="text/javascript" src="lib/qrcode.js"></script>
 <section class="success" id="about">
     <div class="container-fluid">
         <hr>
         <div class="row">
             <div class="col-sm-9 col-md-offset-4">
-                <img src="/img/qrcode.png" >
+
+                <!--<img src="/img/qrcode.png" >-->
+                <img src="/img/BobQR.png">
+                <!--<div id="QRCode" style="width:100px; height:100px; margin-top:15px;"></div>-->
+
                 <span>OTP: 1234</span>
             </div>
         </div>
@@ -15,11 +20,8 @@
                 <br/>
                 Or enter your mobile number below, so we can set you up.
             </p>
+
         </div>
-
-
-
-
 
         <div class="row">
 
@@ -41,13 +43,30 @@
                             </div>
                         </div>
 
-
                     </fieldset>
                 </form>
+            </div>
 
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-4 col-md-offset-1">
+                <a class="btn btn-primary" href="/#/devList" style="position: absolute ; top: 11%; right: 5%">Sick of passwords? Try Passive Auth!</a>
+                <!--<button id="devList" name="devList" class="btn btn-primary"> See Device List </button>-->
             </div>
         </div>
 
-
     </div>
 </section>
+
+<!--<script type="text/javascript" src="/lib/qrcode.js"></script>-->
+<!--<script type="text/javascript">-->
+    <!--setTimeout(function(){-->
+        <!--var QRCode = new QRCode(document.getElementById("QRCode"), {-->
+                <!--width : 100,-->
+                <!--height : 100-->
+               <!--});-->
+        <!--QRCode.makeCode("Bob");-->
+    <!--}, 5000);-->
+<!--</script>-->
+
