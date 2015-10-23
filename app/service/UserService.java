@@ -47,7 +47,7 @@ public class UserService extends DataService {
     }
 
     public User getUser(String userName) {
-        return as(User.class,db.getCollection("user").find(eq("userName", userName)).first());
+        return as(User.class, db.getCollection("User").find(eq("userName", userName)).first());
     }
 
     public User getUserById(String id){

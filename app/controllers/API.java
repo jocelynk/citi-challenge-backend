@@ -35,7 +35,8 @@ public class API extends Controller {
     }
 
     public static Result getUser(String userName){
-        return getResponse(UserService.asDocument(userService.getUser(userName)), "error getting user");
+        User user=userService.getUser(userName);
+        return ok(Json.toJson(user));
     }
 
 

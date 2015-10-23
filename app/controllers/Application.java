@@ -1,10 +1,16 @@
 package controllers;
 
+import dto.Message;
 import play.libs.F;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
 import views.html.index;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Application extends Controller {
 
@@ -14,6 +20,7 @@ public class Application extends Controller {
 
 
     public static WebSocket<String> ws() {
+        Map<String,List<WebSocket<String>> > userWs=new HashMap<>();
         return new WebSocket<String>() {
 
             // Called when the Websocket Handshake is done.
@@ -23,6 +30,8 @@ public class Application extends Controller {
                 in.onMessage(new F.Callback<String>() {
                     public void invoke(String event) {
                      // Log events to the console
+                        Message message = Json.fromJson(Json.parse(event), Message.class);
+                        out.write(event);
                         System.out.println(event);
                     }
                 });
@@ -35,7 +44,6 @@ public class Application extends Controller {
 
                     }
                 });
-                System.out.println("sending hello!");
                 // Send a single 'Hello!' message
                 out.write("Hello!");
 

@@ -14,7 +14,7 @@ define(['angular'], function (angular) {
             return $resource('/api/device/:name', {name:'all'});
         })
         .factory('User',function($resource){
-            return $resource('/api/user/:email', {email:'@id'});
+            return $resource('/api/user/:userName', {userName:'@userName'});
         });
 
 });

@@ -44,19 +44,26 @@ define(function () {
 
     controllers.qrCode.$inject = ["$scope", "Device"];
 
-    controllers.login = function ($rootScope, $scope, $routeParams, $http, $window, $route, $location) {
+    controllers.login = function ($rootScope, $scope, $routeParams, $http, $window, $route, $location, User) {
         $scope.message=$routeParams.message;
         var redirect  =$routeParams.redirect;
         redirect= redirect || "/myAccount";
         var action="api/user/login?redirect="+redirect;
 
         $scope.$watch("user.userName", function(newValue, oldValue) {
-            if ($scope.userName.length > 3) {
-                var user=User.get({userName: $scope.user.userName});
+            if ($scope.user.userName.length > 3) {
+                User.get({userName: $scope.user.userName}, function (user) {
+                    console.log(user);
+                    $scope.passiveAuth=user.passiveAuth;
+                });
             }
         });
 
         $scope.authenticate=function(){
+            if($scope.passiveAuth){
+                redirect="/devList"
+                $location.path(redirect);
+            }
             var user = $scope.user;
             $http.post(action, user).then(
                 function success(response){
