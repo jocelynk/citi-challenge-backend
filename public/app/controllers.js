@@ -30,17 +30,13 @@ define(function () {
     controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' ];
 
     controllers.qrCode = function ($scope , Device) {
-//        require(['qrcode'], function() {
-//            //      var currentUser = {"username": "Bob" , "id": 12345}
-//            //      var currentUser = $scope.currentUser
-//                var QRCode = new QRCode(document.getElementById("QRCode"), {
-//                width : 100,
-//                height : 100
-//               });
-//                            QRCode.makeCode("Bob");
-//            }
-//        );
-    console.log("Make qr code")
+        console.log(document.getElementById("QRCode"));
+        var qrcode = new QRCode(document.getElementById("QRCode"), {
+            width : 100,
+            height : 100
+        });
+        qrcode.makeCode("today");
+        console.log("Make qr code")
     }
 
     controllers.qrCode.$inject = ["$scope", "Device"];
