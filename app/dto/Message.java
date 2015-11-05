@@ -7,5 +7,8 @@ public class Message {
     public String event;
     public String type;
     public String userId;
+    public String username;
+    public String deviceId;
+    public String status;
     public String content;
 }

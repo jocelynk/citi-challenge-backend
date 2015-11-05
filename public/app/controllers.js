@@ -12,25 +12,26 @@ define(function () {
     controllers.home = function ($scope, $rootScope, $cookies) {
         delete $rootScope.currentUser;
         if($cookies.get("user-name")){
-            $rootScope.currentUser={name:$cookies.get("userName")}
+            $rootScope.currentUser={name:$cookies.get("username")}
         }
     };
     controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
 
-    controllers.devList = function ($scope, $cookies,$websocket ) {
-          var ws = $websocket.$new('ws://localhost:9000/ws');
-          ws.$on('$open', function () {
-            ws.$emit('hello', 'world'); // it sends the event 'hello' with data 'world'
-          })
-          .$on('incoming event', function (message) { // it listents for 'incoming event'
+    controllers.devList = function ($scope, $cookies, $location,  $routeParams) {
+          var username=$routeParams.username;
+          var ws = new WebSocket('ws://localhost:9000/ws');
+          ws.onopen =function () {
+            ws.send('{ "event":"login_init", "username":"'+username+'"}'); // it sends the event 'hello' with data 'world'
+          }
+          ws.onmessage=function (message) { // it listents for 'incoming event'
             console.log('something incoming from the server: ' + message);
-          });
+          };
         };
-    controllers.devList.$inject = ['$scope', '$cookies' ];
+    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' ];
 
     controllers.qrCode = function ($scope , Device) {
 //        require(['qrcode'], function() {
-//            //      var currentUser = {"userName": "Bob" , "id": 12345}
+//            //      var currentUser = {"username": "Bob" , "id": 12345}
 //            //      var currentUser = $scope.currentUser
 //                var QRCode = new QRCode(document.getElementById("QRCode"), {
 //                width : 100,
@@ -50,9 +51,9 @@ define(function () {
         redirect= redirect || "/myAccount";
         var action="api/user/login?redirect="+redirect;
 
-        $scope.$watch("user.userName", function(newValue, oldValue) {
-            if ($scope.user.userName.length > 3) {
-                User.get({userName: $scope.user.userName}, function (user) {
+        $scope.$watch("user.username", function(newValue, oldValue) {
+            if ($scope.user.username.length > 3) {
+                User.get({username: $scope.user.username}, function (user) {
                     console.log(user);
                     $scope.passiveAuth=user.passiveAuth;
                 });
@@ -61,7 +62,8 @@ define(function () {
 
         $scope.authenticate=function(){
             if($scope.passiveAuth){
-                redirect="/devList"
+                redirect="/devList";
+                $location.search("username",$scope.user.username)
                 $location.path(redirect);
             }
             var user = $scope.user;

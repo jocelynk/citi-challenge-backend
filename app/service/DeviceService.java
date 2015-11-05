@@ -7,6 +7,8 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+
 /**
  * Created by sasinda on 10/22/15.
  */
@@ -27,7 +29,10 @@ public class DeviceService extends DataService{
             Document device1 = createDevice(device);
             list.add(device1);
         }
-
         return deviceList;
+    }
+
+    public Device getDevice(String devId) {
+        return as(Device.class, db.getCollection("Device").find(eq("username", devId)).first());
     }
 }

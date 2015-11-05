@@ -7,8 +7,8 @@ import play.data.validation.Constraints;
  * Created by sasinda on 10/22/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Device {
-    public String id;
+public class Device extends BaseModel{
+
     @Constraints.Required
     public String deviceId;
     //beacon, smart phone

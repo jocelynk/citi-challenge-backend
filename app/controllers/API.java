@@ -3,7 +3,6 @@ package controllers;
 
 import dto.DevicesDto;
 import exception.RESTException;
-import model.Device;
 import model.Login;
 import model.User;
 import org.bson.Document;
@@ -43,21 +42,21 @@ public class API extends Controller {
 
     public static Result login() {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
-        String userName = loginForm.get().userName;
+        String userName = loginForm.get().username;
         String pass = loginForm.get().password;
 
         User user = userService.authenticate(userName, pass);
         //if success
         session().clear();
-        session("userName", user.getUserName());
-        response().setCookie("userName", user.getUserName());
+        session("username", user.getUsername());
+        response().setCookie("username", user.getUsername());
         user.setPassword(null);
         return ok(Json.toJson(user));
     }
 
     public static Result logout() {
         session().clear();
-        response().discardCookie("userName");
+        response().discardCookie("username");
         return redirect(
             routes.Application.index()
         );

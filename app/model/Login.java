@@ -7,7 +7,7 @@ import play.data.validation.Constraints;
  */
 public class Login {
     @Constraints.Required
-    public String userName;
+    public String username;
     @Constraints.Required
     public String password;
 

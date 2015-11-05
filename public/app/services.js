@@ -11,10 +11,13 @@ define(['angular'], function (angular) {
     angular.module('myApp.services', []).
         value('version', '0.21')
         .factory('Device', function ($resource) {
-            return $resource('/api/device/:name', {name:'all'});
+            return $resource('/api/device/:name', {name: 'all'});
         })
-        .factory('User',function($resource){
-            return $resource('/api/user/:userName', {userName:'@userName'});
+        .factory('User', function ($resource) {
+            return $resource('/api/user/:username', {userName: '@username'});
+        })
+        .factory('WS', function ($resource) {
+            return $resource('/api/user/:userName', {userName: '@userName'});
         });
 
 });

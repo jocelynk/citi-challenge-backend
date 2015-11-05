@@ -1,6 +1,7 @@
 package controllers;
 
 import dto.Message;
+import org.apache.commons.collections.map.HashedMap;
 import play.libs.F;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -18,20 +19,25 @@ public class Application extends Controller {
         return ok(index.render("Your new application is ready."));
     }
 
+    static Map<String,Connection> connetions=new HashedMap();
 
     public static WebSocket<String> ws() {
-        Map<String,List<WebSocket<String>> > userWs=new HashMap<>();
         return new WebSocket<String>() {
-
             // Called when the Websocket Handshake is done.
-            public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
-
+            public void onReady(In<String> in, Out<String> out) {
                 // For each event received on the socket,
                 in.onMessage(new F.Callback<String>() {
                     public void invoke(String event) {
-                     // Log events to the console
+                        // Log events to the console
                         Message message = Json.fromJson(Json.parse(event), Message.class);
-                        out.write(event);
+                        if ("OPEN".equalsIgnoreCase(message.event)) {
+                            if (message.username != null) {
+
+                            } else {
+                                message.username = "test";
+                                connetions.put(message.username,null );
+                            }
+                        }
                         System.out.println(event);
                     }
                 });
@@ -50,6 +56,12 @@ public class Application extends Controller {
             }
 
         };
+
     }
 
+
+    private static class Connection {
+        WebSocket.In<String> in;
+        WebSocket.Out<String> out;
+    }
 }

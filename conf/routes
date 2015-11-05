@@ -13,7 +13,7 @@ POST        /api/user/login         controllers.API.login()
 GET         /api/user/logout        controllers.API.logout()
 
 #POST          /api/user                  controllers.API.createUser()
-GET           /api/user/:userName        controllers.API.getUser(userName:String)
+GET           /api/user/:username        controllers.API.getUser(username:String)
 #PUT           /api/user/:username        controllers.API.updateUser()
 #DELETE        /api/user/:username        controllers.API.deleteUser()
 

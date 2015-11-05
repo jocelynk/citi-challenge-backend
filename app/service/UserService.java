@@ -28,7 +28,7 @@ public class UserService extends DataService {
      * @return
      */
     public User authenticate(String userName, String password) {
-        Document doc = collection.find(eq("userName", userName)).first();
+        Document doc = collection.find(eq("username", userName)).first();
         User user = as(User.class, doc);
         if (user == null) {
             throw new AuthException("user not found");
@@ -47,7 +47,7 @@ public class UserService extends DataService {
     }
 
     public User getUser(String userName) {
-        return as(User.class, db.getCollection("User").find(eq("userName", userName)).first());
+        return as(User.class, db.getCollection("User").find(eq("username", userName)).first());
     }
 
     public User getUserById(String id){

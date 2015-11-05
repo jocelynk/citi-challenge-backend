@@ -14,7 +14,7 @@ public class User extends BaseModel{
 
     private String userId;
     @Constraints.Required
-    private String userName;
+    private String username;
     @Constraints.Required
     private String email;
     @Constraints.Required
@@ -31,12 +31,12 @@ public class User extends BaseModel{
         this.userId=id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
