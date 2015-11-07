@@ -30,13 +30,13 @@ define(function () {
     controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' ];
 
     controllers.qrCode = function ($scope , Device) {
-        console.log(document.getElementById("QRCode"));
         var qrcode = new QRCode(document.getElementById("QRCode"), {
             width : 100,
             height : 100
         });
         qrcode.makeCode("today");
         console.log("Make qr code")
+        user = $scope.user
     }
 
     controllers.qrCode.$inject = ["$scope", "Device"];
