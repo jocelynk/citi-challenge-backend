@@ -2,10 +2,92 @@
 
 <section class="success" id="about">
     <div class="container-fluid">
+
         <div class="row">
             <!--ng-repeat="device in devices"-->
-            <div class="col-sm-6 " id="steps" >
-                <h2>Phone <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs" > </i></h2>
+            <div class="col-sm-6 " id="steps">
+
+                <div id='slimey'>
+                    <div id='leye' class='eye'></div>
+                    <div id='reye' class='eye'></div>
+                    <div id='lips'></div>
+                </div>
+
+                <script>
+                    var lips = document.getElementById('lips');
+
+                    function changeSmile(slider) {
+                        console.log(slider.value)
+                        var lh = lips.style.height, slide = 0;
+                        if ((50 - slider.value) > 0) {
+                            slide = (50 - slider.value);
+                            lips.style.borderTop = "2px black solid";
+                            lips.style.borderBottom = "none";
+                        }
+                        else {
+                            slide = (slider.value - 50);
+                            lips.style.borderBottom = "2px black solid";
+                            lips.style.borderTop = "none";
+                        }
+                        lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
+                    }
+                </script>
+
+                <style>
+                    #leye {
+                        left: 25%;
+                    }
+
+                    #reye {
+                        right: 25%;
+                    }
+
+                    .eye {
+                        position: absolute;
+                        background: black;
+                        border-radius: 100%;
+                        height: 15px;
+                        width: 15px;
+                        top: 20px;
+                    }
+
+                    #slimey {
+                        margin: auto;
+                        background: Yellow;
+                        border-radius: 100%;
+                        height: 100px;
+                        width: 100px;
+                        position: relative;
+                    }
+
+                    #lips {
+                        width: 50px;
+                        height: 20px;
+                        position: absolute;
+                        top: calc(70% - 10px);
+                        left: calc(50% - 25px);
+                        background: transparent;
+                        border-top: 2px black solid;
+                        -webkit-transform: rotateX(0deg);
+                        border-radius: 100%;
+                        transform: rotateX(0deg);
+                    }
+
+                    #smileSlide {
+                        width: 100px;
+                        position: absolute;
+                        left: calc(50% - 50px);
+                    }
+                </style>
+
+                <input id="smileSlide" type="range" onchange="changeSmile(this)" value="0"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 " id="devices">
+
+                <h2>Phone <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs"> </i></h2>
+
                 <h2>Beacon <i class="fa fa-ticket"></i> <i class="fa fa-fw fa-cogs"></i></h2>
 
                 <!--<h2>Step 3 <i class="fa fa-map-marker"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
@@ -16,6 +98,7 @@
             </div>
             <div class="col-sm-6">
                 <h6 id="event">confidence score: {{score}}</h6>
+
                 <div id="success" style="display: none">
                     <h2>"Successfully signed in"</h2>
 
@@ -23,6 +106,7 @@
                 </div>
                 <div id="fail" style="display: none" ng-show="score > 1000">
                     <h2>"Successfully Authenticated"</h2>
+
                     <h3>"2 out of 2 steps passed :)"</h3>
                     <!--<h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>-->
                 </div>
@@ -81,8 +165,8 @@
         rows.each(function (i) {
             x[i] = $(this)
             setTimeout(function () {
-                if(n>m/2){
-                    if (i!=1 && i<=n) {
+                if (n > m / 2) {
+                    if (i != 1 && i <= n) {
                         x[i].find('.fa-fw').removeClass('fa-cogs')
                         x[i].find('.fa-fw').addClass('fa-check-square')
                     } else {
@@ -90,8 +174,8 @@
                         x[i].find('.fa-fw').addClass('fa-remove')
                         x[i].find('.fa-fw').addClass('fa-check-square')
                     }
-                }else{
-                    if ( i <n) {
+                } else {
+                    if (i < n) {
                         x[i].find('.fa-fw').removeClass('fa-cogs')
                         x[i].find('.fa-fw').addClass('fa-check-square')
                     } else {
