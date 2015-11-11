@@ -15,11 +15,11 @@ import java.util.Map;
 
 public class Application extends Controller {
 
+    private static PassiveAuth auth=new PassiveAuth();
+
     public static Result index() {
         return ok(index.render("Your new application is ready."));
     }
-
-    static Map<String,Connection> connetions=new HashedMap();
 
     public static WebSocket<String> ws() {
         return new WebSocket<String>() {
@@ -30,24 +30,14 @@ public class Application extends Controller {
                     public void invoke(String event) {
                         // Log events to the console
                         Message message = Json.fromJson(Json.parse(event), Message.class);
-                        if ("OPEN".equalsIgnoreCase(message.event)) {
-                            if (message.username != null) {
-
-                            } else {
-                                message.username = "test";
-                                connetions.put(message.username,null );
-                            }
-                        }
-                        System.out.println(event);
+                        auth.onMessage(message,in,out);
                     }
                 });
 
                 // When the socket is closed.
                 in.onClose(new F.Callback0() {
                     public void invoke() {
-
-                        System.out.println("Disconnected");
-
+                        System.out.println("closed");
                     }
                 });
                 // Send a single 'Hello!' message
@@ -60,8 +50,6 @@ public class Application extends Controller {
     }
 
 
-    private static class Connection {
-        WebSocket.In<String> in;
-        WebSocket.Out<String> out;
-    }
+
+
 }

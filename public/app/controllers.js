@@ -21,7 +21,7 @@ define(function () {
           var username=$routeParams.username;
           var ws = new WebSocket('ws://localhost:9000/ws');
           ws.onopen =function () {
-            ws.send('{ "event":"login_init", "username":"'+username+'"}'); // it sends the event 'hello' with data 'world'
+            ws.send('{ "event":"OPEN", "username":"'+username+'"}'); // it sends the event 'hello' with data 'world'
           }
           ws.onmessage=function (message) { // it listents for 'incoming event'
             console.log('something incoming from the server: ' + message);
