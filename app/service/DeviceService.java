@@ -33,6 +33,6 @@ public class DeviceService extends DataService{
     }
 
     public Device getDevice(String devId) {
-        return as(Device.class, db.getCollection("Device").find(eq("username", devId)).first());
+        return as(Device.class, db.getCollection("Device").find(eq("deviceId", devId)).first());
     }
 }

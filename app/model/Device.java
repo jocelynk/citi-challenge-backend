@@ -24,6 +24,7 @@ public class Device extends BaseModel{
     //TODO: we need a list of reg ssids, with recency and etc
     public String wifiSSID;
     public String ipAddress;
+    public Device pairedDevices;
 
     public User user;
     //just for demo

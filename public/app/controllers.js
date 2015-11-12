@@ -21,11 +21,15 @@ define(function () {
           var username=$routeParams.username;
           var ws = new WebSocket('ws://localhost:9000/ws');
           ws.onopen =function () {
-            ws.send('{ "event":"OPEN", "username":"'+username+'"}'); // it sends the event 'hello' with data 'world'
+            ws.send('{ "event":"OPEN", "username":"'+username+'"}'); //First call OPEN event to initilize for this client
+            ws.send('{ "event":"LOGIN_INIT", "username":"'+username+'"}')
+
           }
           ws.onmessage=function (message) { // it listents for 'incoming event'
-            console.log('something incoming from the server: ' + message);
+             console.log('from server: ' + message.data);
+              $scope.event=event+"<br/>"+message.data;
           };
+
         };
     controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' ];
 

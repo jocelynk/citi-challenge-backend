@@ -1,5 +1,6 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import model.Device;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 /**
  * Created by sasinda on 10/23/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DevicesDto {
     private String userId;
     private List<Device> devices;
