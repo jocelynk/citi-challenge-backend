@@ -40,7 +40,7 @@ define(function () {
         });
         qrcode.makeCode("today");
         console.log("Make qr code")
-        user = $scope.user
+        //user = $scope.user
     }
 
     controllers.qrCode.$inject = ["$scope", "Device"];

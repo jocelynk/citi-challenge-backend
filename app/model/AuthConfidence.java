@@ -14,14 +14,11 @@ public class AuthConfidence {
     public int confidenceScore=0;
     List<Message> messages=new ArrayList<>();
     public boolean actionRequired=false;
-
-
+    public boolean actionRequested=false;
+    public boolean actionConfirmed=false;
 
     public void addMessege(Message message){
         messages.add(message);
-        if(messages.size()>2){
-            actionRequired=true;
-        }
         updateConfidenceScore(message);
     }
 
@@ -129,6 +126,7 @@ public class AuthConfidence {
         List<Device> devices=new ArrayList<>();
         devices.add(regMaster);
         devices.add(regBeacon);
+
         calculateConfidenceScore(master);
 
     }
