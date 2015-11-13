@@ -75,6 +75,7 @@ public class PassiveAuth {
             if (authConfidence != null && connectionList != null) {
                 authConfidence.addMessege(message);
                 for (Connection connection : connetions.get(message.username)) {
+                    //if action required
                     if (authConfidence.actionRequired && !authConfidence.actionRequested) {
                         connection.out.write("{\"event\":\"LOGIN_ACTION_REQUIRED\", \"type\":\"SHAKE\"}");
                         authConfidence.actionRequested=true;
@@ -86,7 +87,10 @@ public class PassiveAuth {
             AuthConfidence authConfidence = confs.get(message.username);
             List<Connection> connectionList = connetions.get(message.username);
             if (authConfidence != null && connectionList != null) {
-
+                authConfidence.confirmAction();
+                for (Connection connection : connectionList) {
+                    connection.out.write("{\"event\":\"UPDATE_CONF_SCORE\", \"score\":\" " + authConfidence.confidenceScore + "\"}");
+                }
             }
         }
 

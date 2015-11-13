@@ -24,7 +24,16 @@ public class AuthConfidence {
 
     public int updateConfidenceScore(Message message){
         int score = calculateConfidenceScore(message);
+        if(confidenceScore<1000){
+            actionRequired=true;
+        }
         confidenceScore+=score;
+        return confidenceScore;
+    }
+
+    public int confirmAction(){
+        actionConfirmed=true;
+        confidenceScore+=1000;
         return confidenceScore;
     }
 
