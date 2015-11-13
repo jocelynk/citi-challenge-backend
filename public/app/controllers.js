@@ -1,7 +1,7 @@
 /*global define */
 
 'use strict';
-
+wsCon;
 define(function () {
 
 
@@ -18,16 +18,23 @@ define(function () {
     controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
 
     controllers.devList = function ($scope, $cookies, $location,  $routeParams) {
-          var username=$routeParams.username;
+         var username=$routeParams.username;
           var ws = new WebSocket('ws://localhost:9000/ws');
           ws.onopen =function () {
             ws.send('{ "event":"OPEN", "username":"'+username+'"}'); //First call OPEN event to initilize for this client
             ws.send('{ "event":"LOGIN_INIT", "username":"'+username+'"}')
 
           }
-          ws.onmessage=function (message) { // it listents for 'incoming event'
+            $scope.devices=[]
+        $scope.score=0;
+        ws.onmessage=function (message) { // it listents for 'incoming event'
              console.log('from server: ' + message.data);
-              $scope.event=event+"<br/>"+message.data;
+             var event=JSON.parse(message.data);
+              $scope.event=message.data;
+              if(event.event=="UPDATE_CONF_SCORE"){
+                  $scope.score=event.score;
+              }
+
           };
 
         };
