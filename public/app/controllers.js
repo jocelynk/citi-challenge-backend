@@ -11,91 +11,95 @@ define(function () {
 
     controllers.home = function ($scope, $rootScope, $cookies) {
         delete $rootScope.currentUser;
-        if($cookies.get("user-name")){
-            $rootScope.currentUser={name:$cookies.get("username")}
+        if ($cookies.get("user-name")) {
+            $rootScope.currentUser = {name: $cookies.get("username")}
         }
     };
-    controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
+    controllers.home.$inject = ['$scope', '$rootScope', '$cookies'];
 
-    controllers.devList = function ($scope, $cookies, $location,  $routeParams, $timeout) {
-         var username=$routeParams.username;
-          var ws = new WebSocket('ws://localhost:9000/ws');
-          ws.onopen =function () {
-            ws.send('{ "event":"OPEN", "username":"'+username+'"}'); //First call OPEN event to initilize for this client
-            ws.send('{ "event":"LOGIN_INIT", "username":"'+username+'"}')
+    controllers.devList = function ($scope, $cookies, $location, $routeParams, $timeout) {
+        var username = $routeParams.username;
+        var ws = new WebSocket('ws://localhost:9000/ws');
+        ws.onopen = function () {
+            ws.send('{ "event":"OPEN", "username":"' + username + '"}'); //First call OPEN event to initilize for this client
+            ws.send('{ "event":"LOGIN_INIT", "username":"' + username + '"}')
 
-          }
-        $scope.success=false;
-        $scope.devices=[]
-        $scope.score=0;
-        ws.onmessage=function (message) { // it listents for 'incoming event'
-             console.log('from server: ' + message.data);
-             var event=JSON.parse(message.data);
-              $scope.event=message.data;
-              if(event.event=="UPDATE_CONF_SCORE"){
-                  $scope.score=event.score;
-                  if(event.score>1000){
-                      $scope.success=true;
-                      $timeout(function () {
-                          $location.path("/myAccount")
-                      },3000)
-                  }
-                  $scope.$apply()
-              }
-          };
-        wsCon=ws;
+        }
+        $scope.success = false;
+        $scope.devices = []
+        $scope.score = 0;
+        ws.onmessage = function (message) { // it listents for 'incoming event'
+            console.log('from server: ' + message.data);
+            var event = JSON.parse(message.data);
+            $scope.event = message.data;
+            if (event.event == "UPDATE_CONF_SCORE") {
+                $scope.score = event.score;
+                if (event.score > 1000) {
+                    $scope.success = true;
+                    $timeout(function () {
+                        $location.path("/myAccount")
+                    }, 3000)
+                }
+                $scope.$apply()
+            }
         };
-    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' , '$timeout'];
+        wsCon = ws;
+    };
+    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams', '$timeout'];
 
-    controllers.qrCode = function ($scope , Device) {
+    controllers.qrCode = function ($scope, $cookies, Device) {
+        var code = "{\"userId\":\"" + $cookies.get('username') + "\"}"
+        console.log(code)
         var qrcode = new QRCode(document.getElementById("QRCode"), {
-            width : 100,
-            height : 100
+            width: 100,
+            height: 100
         });
-        qrcode.makeCode("today");
+        qrcode.makeCode(code);
         console.log("Make qr code")
         //user = $scope.user
     }
 
-    controllers.qrCode.$inject = ["$scope", "Device"];
+    controllers.qrCode.$inject = ["$scope", '$cookies', "Device"];
 
-    controllers.login = function ($rootScope, $scope, $routeParams, $http, $window, $route, $location, User) {
-        $scope.message=$routeParams.message;
-        var redirect  =$routeParams.redirect;
-        redirect= redirect || "/myAccount";
-        var action="api/user/login?redirect="+redirect;
+    controllers.login = function ($rootScope, $scope, $routeParams, $http, $window, $route, $location, $cookies, User) {
+        $scope.message = $routeParams.message;
+        var redirect = $routeParams.redirect;
+        redirect = redirect || "/myAccount";
+        var action = "api/user/login?redirect=" + redirect;
 
-        $scope.$watch("user.username", function(newValue, oldValue) {
+        $scope.$watch("user.username", function (newValue, oldValue) {
             if ($scope.user.username.length > 3) {
                 User.get({username: $scope.user.username}, function (user) {
                     console.log(user);
-                    $scope.passiveAuth=user.passiveAuth;
+                    $scope.passiveAuth = user.passiveAuth;
+                    $rootScope.currentUser = user;
+                    $cookies.put('username', user.username);
                 });
             }
         });
 
-        $scope.authenticate=function(){
-            if($scope.passiveAuth){
-                redirect="/devList";
-                $location.search("username",$scope.user.username)
+        $scope.authenticate = function () {
+            if ($scope.passiveAuth) {
+                redirect = "/devList";
+                $location.search("username", $scope.user.username)
                 $location.path(redirect);
             }
             var user = $scope.user;
             $http.post(action, user).then(
-                function success(response){
+                function success(response) {
                     $location.path(redirect);
                     $route.reload();
                     delete $rootScope.currentUser;
-                    $rootScope.currentUser=response.data
+                    $rootScope.currentUser = response.data
                 },
-                function error(error){
-                    $scope.message=error;
+                function error(error) {
+                    $scope.message = error;
                 }
             );
         }
 
     }
-    controllers.login.$inject = ['$rootScope', '$scope','$routeParams', '$http', '$window','$route', '$location', 'User'];
+    controllers.login.$inject = ['$rootScope', '$scope', '$routeParams', '$http', '$window', '$route', '$location', '$cookies', 'User'];
 
     controllers.register = function ($scope, $location, User) {
         $scope.createUser = function () {
@@ -105,20 +109,20 @@ define(function () {
             });
         };
     }
-    controllers.register.$inject = ['$scope','$location','User'];
+    controllers.register.$inject = ['$scope', '$location', 'User'];
 
     /**
      * Interceptors for the controllers
      */
 
-    controllers.intercept= function(event, next, current, $rootScope, $location){
+    controllers.intercept = function (event, next, current, $rootScope, $location) {
 
 
-        if(next.loginRequired){
-            if(!$rootScope.currentUser ){
-                var msg=null;
-                var nextPath='/#/'+$location.path()
-                $location.path('login/').search({'redirect':nextPath, 'message': msg});
+        if (next.loginRequired) {
+            if (!$rootScope.currentUser) {
+                var msg = null;
+                var nextPath = '/#/' + $location.path()
+                $location.path('login/').search({'redirect': nextPath, 'message': msg});
             }
         }
     }
