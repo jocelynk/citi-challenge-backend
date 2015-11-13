@@ -1,7 +1,7 @@
 /*global define */
 
 'use strict';
-wsCon;
+var wsCon;
 define(function () {
 
 
@@ -17,7 +17,7 @@ define(function () {
     };
     controllers.home.$inject = ['$scope','$rootScope', '$cookies' ];
 
-    controllers.devList = function ($scope, $cookies, $location,  $routeParams) {
+    controllers.devList = function ($scope, $cookies, $location,  $routeParams, $timeout) {
          var username=$routeParams.username;
           var ws = new WebSocket('ws://localhost:9000/ws');
           ws.onopen =function () {
@@ -25,7 +25,8 @@ define(function () {
             ws.send('{ "event":"LOGIN_INIT", "username":"'+username+'"}')
 
           }
-            $scope.devices=[]
+        $scope.success=false;
+        $scope.devices=[]
         $scope.score=0;
         ws.onmessage=function (message) { // it listents for 'incoming event'
              console.log('from server: ' + message.data);
@@ -33,12 +34,18 @@ define(function () {
               $scope.event=message.data;
               if(event.event=="UPDATE_CONF_SCORE"){
                   $scope.score=event.score;
+                  if(event.score>1000){
+                      $scope.success=true;
+                      $timeout(function () {
+                          $location.path("/myAccount")
+                      },3000)
+                  }
+                  $scope.$apply()
               }
-
           };
-
+        wsCon=ws;
         };
-    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' ];
+    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams' , '$timeout'];
 
     controllers.qrCode = function ($scope , Device) {
         var qrcode = new QRCode(document.getElementById("QRCode"), {

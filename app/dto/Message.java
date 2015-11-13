@@ -1,6 +1,7 @@
 package dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonValue;
 import model.Device;
 
 /**
@@ -18,7 +19,8 @@ public class Message {
 
     //device specific
     public String deviceId;
-    public DevTypes devType; //BEACON, SMART_PHONE
+
+    public DevTypes deviceType; //BEACON, SMART_PHONE
     public String deviceName;
     public String bluetoothAddress;
     public String status;
@@ -33,6 +35,7 @@ public class Message {
 
     public enum DevTypes {
         BEACON,
-        SMART_PHONE
+        SMART_PHONE;
+
     }
 }

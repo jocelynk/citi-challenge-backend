@@ -80,7 +80,7 @@ public class PassiveAuth {
                         connection.out.write("{\"event\":\"LOGIN_ACTION_REQUIRED\", \"type\":\"SHAKE\"}");
                         authConfidence.actionRequested=true;
                     }
-                    connection.out.write("{\"event\":\"UPDATE_CONF_SCORE\", \"score\":\" " + authConfidence.confidenceScore + "\"}");
+                    connection.out.write("{\"event\":\"UPDATE_CONF_SCORE\", \"score\":\"" + authConfidence.confidenceScore + "\"}");
                 }
             }
         } else if("LOGIN_ACTION_CONFIRMED".equalsIgnoreCase(message.event)){
@@ -89,7 +89,7 @@ public class PassiveAuth {
             if (authConfidence != null && connectionList != null) {
                 authConfidence.confirmAction();
                 for (Connection connection : connectionList) {
-                    connection.out.write("{\"event\":\"UPDATE_CONF_SCORE\", \"score\":\" " + authConfidence.confidenceScore + "\"}");
+                    connection.out.write("{\"event\":\"UPDATE_CONF_SCORE\", \"score\":\"" +authConfidence.confidenceScore + "\"}");
                 }
             }
         }

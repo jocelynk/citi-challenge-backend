@@ -1,7 +1,6 @@
 package model;
 
 import dto.Message;
-import model.Device;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +45,8 @@ public class AuthConfidence {
 
         double beaconScore = 0;
         double phoneScore=0;
-        if(message.devType!=null){
-            switch (message.devType){
+        if(message.deviceType !=null){
+            switch (message.deviceType){
                 case SMART_PHONE: {
                     regMaster=message.origDevice;
                     master=message;
@@ -79,7 +78,7 @@ public class AuthConfidence {
 
             //Phone
 
-            if(master!=null){
+             if(master!=null){
                 if(master.wifiSSID.equals(regMaster.wifiSSID)){
                     phoneScore+= random(225, 325);
                 }
@@ -116,14 +115,14 @@ public class AuthConfidence {
         regBeacon.deviceId="ABC";
 
         Message master = new Message();
-        master.devType= Message.DevTypes.SMART_PHONE;
+        master.deviceType = Message.DevTypes.SMART_PHONE;
         master.wifiSSID="ssid";
         master.bluetoothAddress="ABC";
         master.ipAddress="123";
         master.origDevice=regMaster;
 
         Message beacon = new Message();
-        beacon.devType= Message.DevTypes.BEACON;
+        beacon.deviceType = Message.DevTypes.BEACON;
         beacon.proximity=1;
         beacon.bluetoothAddress="ABC";
         beacon.deviceId="ABC";
