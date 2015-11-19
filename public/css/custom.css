@@ -1,0 +1,44 @@
+#leye {
+    left: 25%;
+}
+
+#reye {
+    right: 25%;
+}
+
+.eye {
+    position: absolute;
+    background: black;
+    border-radius: 100%;
+    height: 15px;
+    width: 15px;
+    top: 20px;
+}
+
+#slimey {
+    margin: auto;
+    background: Yellow;
+    border-radius: 100%;
+    height: 100px;
+    width: 100px;
+    position: relative;
+}
+
+#lips {
+    width: 50px;
+    height: 20px;
+    position: absolute;
+    top: calc(70% - 10px);
+    left: calc(50% - 25px);
+    background: transparent;
+    border-top: 2px black solid;
+    -webkit-transform: rotateX(0deg);
+    border-radius: 100%;
+    transform: rotateX(0deg);
+}
+
+#smileSlide {
+    width: 100px;
+    position: absolute;
+    left: calc(50% - 50px);
+}

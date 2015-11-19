@@ -2,19 +2,22 @@ package model;
 
 import dto.Message;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static model.Score.Type.*;
 
 /**
  * Created by sasinda on 11/10/15.
  */
 public class AuthConfidence {
 
-    public int confidenceScore=0;
+    private int confidenceScore=0;
+    private boolean success;
     List<Message> messages=new ArrayList<>();
-    public boolean actionRequired=false;
-    public boolean actionRequested=false;
-    public boolean actionConfirmed=false;
+    Map<String,Score> scoreMap=new HashMap<>();
+    private boolean actionRequired=false;
+    private boolean actionRequested=false;
+    private boolean actionConfirmed=false;
 
     public void addMessege(Message message){
         messages.add(message);
@@ -23,78 +26,106 @@ public class AuthConfidence {
 
     public int updateConfidenceScore(Message message){
         int score = calculateConfidenceScore(message);
-        if(confidenceScore<1000){
-            actionRequired=true;
+        confidenceScore=score;
+        if(getConfidenceScore() >300 ){
+            setActionRequired(true);
         }
-        confidenceScore+=score;
         return confidenceScore;
     }
 
     public int confirmAction(){
-        actionConfirmed=true;
+        setActionConfirmed(true);
         confidenceScore+=1000;
-        return confidenceScore;
+        return getConfidenceScore();
     }
 
-    public static int calculateConfidenceScore(Message message){
+    public  int calculateConfidenceScore(Message message){
 
         Device regMaster=null;
         Device regBeacon = null;
         Message master = null;
         Message beacon = null;
 
-        double beaconScore = 0;
-        double phoneScore=0;
-        if(message.deviceType !=null){
-            switch (message.deviceType){
+        //temp var to be set in score map
+        String deviceId= message.getDeviceId();
+        double val;
+        if(message.getDeviceType() !=null && deviceId!=null){
+            switch (message.getDeviceType()){
                 case SMART_PHONE: {
-                    regMaster=message.origDevice;
+                    regMaster= message.getOrigDevice();
                     master=message;
                     break;
                 }
                 case BEACON: {
                     beacon = message;
-                    regBeacon = message.origDevice;
+                    regBeacon = message.getOrigDevice();
                     break;
                 }
             }
             //Beacon
-            if(beacon!=null){
+            if(beacon!=null&& regBeacon!=null){
+
                 //proximity
-                if(beacon.proximity>0) {
-                    double proximity=beacon.proximity;
-                    beaconScore = Math.pow((10 - proximity * proximity),3) + random(130, 200);
+                if(beacon.getProximity() >0) {
+                    double proximity= beacon.getProximity();
+                    val = Math.pow((10 - proximity * proximity),2) + random(130, 200);
+                    setScore(deviceId, val, PROX, proximity);
+
                 }
+                //adds scores for paired devices
                 //bluetooth address
-                if(beacon.bluetoothAddress==regBeacon.bluetoothAddress){
-                    beaconScore+= random(380, 480);
+                if(beacon.getBluetoothAddress() ==regBeacon.bluetoothAddress){
+                    val= random(380, 480);
+                    setScore(deviceId, val, BT_ADDRESS);
+
                 }
                 //devId
-                if(beacon.deviceId.equals(regBeacon.deviceId)){
-                    beaconScore+= random(175, 275);
+                if(beacon.getDeviceId().equals(regBeacon.deviceId)){
+                    val= random(175, 275);
+                    setScore(deviceId, val, ACTIVE);
                 }
             }
-            System.out.println(beaconScore);
 
             //Phone
 
-             if(master!=null){
-                if(master.wifiSSID.equals(regMaster.wifiSSID)){
-                    phoneScore+= random(225, 325);
+             if(master!=null && regMaster!=null){
+                if(master.getWifiSSID().equals(regMaster.wifiSSID)){
+                    val= random(225, 325);
+                    setScore(deviceId,val,WIFI_SSID);
                 }
-                if(master.ipAddress.equals(regMaster.ipAddress)){
-                    phoneScore+=random(100,200);
+                if(master.getIpAddress().equals(regMaster.ipAddress)){
+                    val=random(100,200);
+                    setScore(deviceId,val,IP_ADDRESS);
                 }
-                if(master.bluetoothAddress==regMaster.bluetoothAddress) {
-                    phoneScore+=random(300,400);
+                if(master.getBluetoothAddress() ==regMaster.bluetoothAddress) {
+                    val=random(300,400);
+                    setScore(deviceId,val,BT_ADDRESS);
                 }
             }
-            System.out.println(phoneScore);
+            System.out.println(scoreMap);
+
         }
 
-        int score= (int) (beaconScore+phoneScore);
+        int score= (int) getCurrentScore();
         System.out.println("Score :"+score);
         return score;
+    }
+
+    private void setScore(String deviceId, double scoreVal, Score.Type scoreType, double proximity)  {
+        Score score = new Score(deviceId, scoreVal, PROX, proximity);
+        scoreMap.put(score.getKey(), score );
+    }
+    private void setScore(String deviceId, double scoreVal, Score.Type scoreType) {
+        Score score=new Score(deviceId,scoreVal,scoreType);
+        scoreMap.put(score.getKey(), score );
+    }
+
+    private  double getCurrentScore(){
+        double current=0;
+        for (Score score : scoreMap.values()) {
+            current+= score.getValue();
+        }
+        return current;
     }
 
     private static double random(int min, int max){
@@ -115,17 +146,17 @@ public class AuthConfidence {
         regBeacon.deviceId="ABC";
 
         Message master = new Message();
-        master.deviceType = Message.DevTypes.SMART_PHONE;
-        master.wifiSSID="ssid";
-        master.bluetoothAddress="ABC";
-        master.ipAddress="123";
-        master.origDevice=regMaster;
+        master.setDeviceType(Message.DevTypes.SMART_PHONE);
+        master.setWifiSSID("ssid");
+        master.setBluetoothAddress("ABC");
+        master.setIpAddress("123");
+        master.setOrigDevice(regMaster);
 
         Message beacon = new Message();
-        beacon.deviceType = Message.DevTypes.BEACON;
-        beacon.proximity=1;
-        beacon.bluetoothAddress="ABC";
-        beacon.deviceId="ABC";
+        beacon.setDeviceType(Message.DevTypes.BEACON);
+        beacon.setProximity(1);
+        beacon.setBluetoothAddress("ABC");
+        beacon.setDeviceId("ABC");
 
         List<Message> messages=new ArrayList<>();
         messages.add(master);
@@ -135,7 +166,51 @@ public class AuthConfidence {
         devices.add(regMaster);
         devices.add(regBeacon);
 
-        calculateConfidenceScore(master);
+//        calculateConfidenceScore(master);
 
+    }
+
+    public int getConfidenceScore() {
+        return confidenceScore;
+    }
+
+    public void setConfidenceScore(int confidenceScore) {
+        this.confidenceScore = confidenceScore;
+    }
+
+    public boolean isActionRequired() {
+        return actionRequired;
+    }
+
+    public void setActionRequired(boolean actionRequired) {
+        this.actionRequired = actionRequired;
+    }
+
+    public boolean isActionRequested() {
+        return actionRequested;
+    }
+
+    public void setActionRequested(boolean actionRequested) {
+        this.actionRequested = actionRequested;
+    }
+
+    public boolean isActionConfirmed() {
+        return actionConfirmed;
+    }
+
+    public void setActionConfirmed(boolean actionConfirmed) {
+        this.actionConfirmed = actionConfirmed;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public List<Score> getSubScores() {
+        return new ArrayList<>(scoreMap.values());
     }
 }

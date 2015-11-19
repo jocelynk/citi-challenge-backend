@@ -34,6 +34,8 @@ public class UserService extends DataService {
             throw new AuthException("user not found");
         } else if (user.getPassword().equals(password)) {
             return user;
+        } else if (password == null) {
+            throw new AuthException("password not provided");
         } else {
             throw new AuthException("password incorrect");
         }
@@ -50,19 +52,19 @@ public class UserService extends DataService {
         return as(User.class, db.getCollection("User").find(eq("username", userName)).first());
     }
 
-    public User getUserById(String id){
+    public User getUserById(String id) {
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(id));
         Document doc = collection.find(query).first();
         return as(User.class, doc);
     }
 
-    public boolean updateUserById(String id, User user){
+    public boolean updateUserById(String id, User user) {
 //        BasicDBObject query = new BasicDBObject();
 //        query.put("_id", new ObjectId(id));
         Document userDoc = asDocument(user);
-        long modifiedCount = collection.updateOne(new Document("userId", id), new Document("$set",userDoc)).getModifiedCount();
-        return modifiedCount>0;
+        long modifiedCount = collection.updateOne(new Document("userId", id), new Document("$set", userDoc)).getModifiedCount();
+        return modifiedCount > 0;
     }
 
 }

@@ -23,27 +23,48 @@ define(function () {
         ws.onopen = function () {
             ws.send('{ "event":"OPEN", "username":"' + username + '"}'); //First call OPEN event to initilize for this client
             ws.send('{ "event":"LOGIN_INIT", "username":"' + username + '"}')
-
         }
         $scope.success = false;
         $scope.devices = []
         $scope.score = 0;
+
+
         ws.onmessage = function (message) { // it listents for 'incoming event'
             console.log('from server: ' + message.data);
             var event = JSON.parse(message.data);
             $scope.event = message.data;
             if (event.event == "UPDATE_CONF_SCORE") {
                 $scope.score = event.score;
-                if (event.score > 1000) {
+                changeSmile($scope.score)
+                if (event.score > 2000) {
                     $scope.success = true;
                     $timeout(function () {
-                        $location.path("/myAccount")
+                        $location.path("/myAccount2")
                     }, 3000)
                 }
                 $scope.$apply()
             }
         };
         wsCon = ws;
+
+        var lips = document.getElementById('lips');
+        function changeSmile(score) {
+
+            console.log(score)
+            score= score/20;
+            var lh = lips.style.height, slide = 0;
+            if ((50 - score) > 0) {
+                slide = (50 - score);
+                lips.style.borderTop = "2px black solid";
+                lips.style.borderBottom = "none";
+            }
+            else {
+                slide = (score - 50);
+                lips.style.borderBottom = "2px black solid";
+                lips.style.borderTop = "none";
+            }
+            lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
+        }
     };
     controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams', '$timeout'];
 
@@ -80,7 +101,7 @@ define(function () {
 
         $scope.authenticate = function () {
             if ($scope.passiveAuth) {
-                redirect = "/devList";
+                redirect = "/devList/";
                 $location.search("username", $scope.user.username)
                 $location.path(redirect);
             }

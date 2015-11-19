@@ -35,10 +35,13 @@ public class API extends Controller {
 
     public static Result getUser(String userName){
         User user=userService.getUser(userName);
-        return ok(Json.toJson(user));
+        if(user!=null){
+            return ok(Json.toJson(user));
+        }else {
+            return badRequest();
+        }
+
     }
-
-
 
     public static Result login() {
         Form<Login> loginForm = form(Login.class).bindFromRequest();

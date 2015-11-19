@@ -1,5 +1,8 @@
 package service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +12,8 @@ import java.util.Map;
  * Created by sasinda on 10/14/15.
  */
 public class Util {
+
+
 
     /**
      * Deparameterize to original json form the query params coming from the jquery.param() method.
@@ -74,5 +79,15 @@ public class Util {
         }
 
         return map;
+    }
+
+    private static ObjectMapper mapper = new ObjectMapper();
+    public static String stringigy(Object o){
+        try {
+            return mapper.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "{\"error\":\"ERROR converting JSON to string\"}";
     }
 }
