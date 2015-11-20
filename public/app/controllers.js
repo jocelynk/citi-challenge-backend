@@ -52,21 +52,19 @@ define(function () {
         };
         wsCon = ws;
 
-//            TODO fix calcDistance based on actual distance values
-//      Should output distance as a value between 0 and 30
         function calcDistance(distance){
             switch (distance) {
                 case 0:
                     return 30;
                     break;
                 case 1:
-                    return 20;
+                    return 0;
                     break;
                 case 2:
                     return 10;
                     break;
                 case 3:
-                    return 0;
+                    return 20;
                     break;
             }
         }
