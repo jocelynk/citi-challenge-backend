@@ -3,23 +3,25 @@
 # ~~~~
 
 # Home page
-GET         /                       controllers.Application.index
+GET         /                                 controllers.Application.index
+
+#Device API
+GET         /api/device                       controllers.API.getDevice
+GET         /api/device/user/:username        controllers.API.getDeviceByUsername(username)
+POST        /api/device                       controllers.API.createDevices
 
 
-GET         /api/device             controllers.API.getDevice
-POST        /api/device             controllers.API.createDevices
-
-POST        /api/user/login         controllers.API.login()
-GET         /api/user/logout        controllers.API.logout()
+POST        /api/user/login                   controllers.API.login()
+GET         /api/user/logout                  controllers.API.logout()
 
 #POST          /api/user                  controllers.API.createUser()
-GET           /api/user/:username        controllers.API.getUser(username:String)
+GET         /api/user/:username           controllers.API.getUser(username:String)
 #PUT           /api/user/:username        controllers.API.updateUser()
 #DELETE        /api/user/:username        controllers.API.deleteUser()
 
 
 
-GET         /ws                         controllers.Application.ws()
+GET         /ws                               controllers.Application.ws()
 
 
 
@@ -27,5 +29,5 @@ GET         /ws                         controllers.Application.ws()
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /*file                  controllers.Assets.at(path="/public", file)
+GET         /*file                            controllers.Assets.at(path="/public", file)
 

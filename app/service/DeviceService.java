@@ -1,5 +1,7 @@
 package service;
 
+import com.mongodb.client.FindIterable;
+import model.BaseModel;
 import model.Device;
 import org.bson.Document;
 
@@ -35,4 +37,33 @@ public class DeviceService extends DataService{
     public Device getDevice(String devId) {
         return as(Device.class, db.getCollection("Device").find(eq("deviceId", devId)).first());
     }
+
+    public List<Device> getDevicesByUser(String username){
+        FindIterable<Document> documents = db.getCollection("Device").find(eq("username", username));
+        return asList(Device.class, documents);
+    }
+
+    public List<Device> getDevicesByUser(String username, boolean clean){
+        FindIterable<Document> documents = db.getCollection("Device").find(eq("username", username));
+        List<Device> devices = asList(Device.class, documents);
+        if(clean=true){
+            List<Device> cleaned=cleaned = new ArrayList<>();
+            for (Device device : devices) {
+                cleaned.add(device.clear());
+            }
+            return cleaned;
+        }
+        return devices;
+    }
+
+
+    public <T extends BaseModel> List<T> asList(Class<T> type, FindIterable<Document> documents){
+        List<T> list=new ArrayList<>();
+        for (Document document : documents) {
+            T obj = as(type, document);
+            list.add(obj);
+        }
+        return list;
+    }
+
 }

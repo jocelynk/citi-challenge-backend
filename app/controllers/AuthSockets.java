@@ -34,9 +34,9 @@ public class AuthSockets {
         if (message.getMasterId() != null) {
             Device master = devService.getDevice(message.getMasterId());
             if (message.getUsername() == null) {
-                message.setUsername(master.username);
+                message.setUsername(master.getUsername());
             }
-            conId = master.deviceId;
+            conId = master.getDeviceId();
         }
         // get the target device for the message
         if (message.getDeviceId() != null) {
