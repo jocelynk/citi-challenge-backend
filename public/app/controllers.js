@@ -66,6 +66,15 @@ define(function () {
             lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
         }
 
+
+        function changeSmile2(score) {
+            if () {
+
+            }
+
+
+        }
+
         //get Device id,type list for user
         DeviceAPI.query({username:username}, function success(devices){
             $scope.devices=devices;
