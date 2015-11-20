@@ -145,7 +145,6 @@ define(function () {
 
     controllers.intercept = function (event, next, current, $rootScope, $location) {
 
-
         if (next.loginRequired) {
             if (!$rootScope.currentUser) {
                 var msg = null;
