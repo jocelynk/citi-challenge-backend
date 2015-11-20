@@ -7,7 +7,9 @@ import enums.DeviceType;
  * Created by sasinda on 11/19/15.
  */
 public class Score {
+    @JsonIgnore
     private String deviceId;
+    @JsonIgnore
     private DeviceType deviceType;
     private double value;
     private Type scoreType;

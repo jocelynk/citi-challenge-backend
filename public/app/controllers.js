@@ -40,7 +40,7 @@ define(function () {
                 $scope.scoreItems = event.subScores;
                 updateScoreList($scope);
                 changeSmile2($scope.score);
-                if (event.score > 2000) {
+                if (event.authSuccess ==true) {
                     $scope.success = true;
                     $timeout(function () {
                         $location.path("/myAccount2")
@@ -118,8 +118,8 @@ define(function () {
             $scope.devices = devices;
             for (var i in devices) {
                 var device = devices[i];
-                $('[id^='+device.type+']').each(function(){
-
+                $('[id^='+device.type+']').each(function(i, element){
+                    element.id=element.id.replace(device.type, device.deviceId)
                 })
             }
             console.log(devices[0])

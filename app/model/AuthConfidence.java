@@ -41,7 +41,8 @@ public class AuthConfidence {
 
     public int confirmAction(){
         setActionConfirmed(true);
-        confidenceScore+=1000;
+        confidenceScore+=500;
+        success=true;
         return getConfidenceScore();
     }
 
