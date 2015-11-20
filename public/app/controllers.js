@@ -19,7 +19,7 @@ define(function () {
 
     controllers.devList = function ($scope, $cookies, $location, $routeParams, $timeout, DeviceAPI) {
         var username = $routeParams.username;
-        var ws = new WebSocket('ws://localhost:9000/ws');
+        var ws = new WebSocket('ws://10.144.25.13:9000/ws');
         ws.onopen = function () {
             ws.send('{ "event":"OPEN", "username":"' + username + '"}'); //First call OPEN event to initilize for this client
             ws.send('{ "event":"LOGIN_INIT", "username":"' + username + '"}')
@@ -55,10 +55,19 @@ define(function () {
 //            TODO fix calcDistance based on actual distance values
 //      Should output distance as a value between 0 and 30
         function calcDistance(distance){
-            if (distance == 0){
-                return 30
-            }else{
-
+            switch (distance) {
+                case 0:
+                    return 30;
+                    break;
+                case 1:
+                    return 20;
+                    break;
+                case 2:
+                    return 10;
+                    break;
+                case 3:
+                    return 0;
+                    break;
             }
         }
 
