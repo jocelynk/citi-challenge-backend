@@ -33,6 +33,7 @@ define(function () {
             console.log('from server: ' + message.data);
             var event = JSON.parse(message.data);
             $scope.event = message.data;
+            changeSmile2($scope.score);
             if (event.event == "UPDATE_CONF_SCORE") {
                 $scope.score = event.score;
                 changeSmile2($scope.score)
@@ -49,46 +50,29 @@ define(function () {
 
         //smiley face
         var lips = document.getElementById('lips');
-        function changeSmile(score) {
-
-            console.log(score)
-            score= score/20;
-            var lh = lips.style.height, slide = 0;
-            if ((50 - score) > 0) {
-                slide = (50 - score);
-                lips.style.borderTop = "2px black solid";
-                lips.style.borderBottom = "none";
-            }
-            else {
-                slide = (score - 50);
-                lips.style.borderBottom = "2px black solid";
-                lips.style.borderTop = "none";
-            }
-            lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
-        }
 
 
         function changeSmile2(score) {
-            var smile = document.getElementById("smile_img").src;
-            console.log(smile);
-//            if (score <= 900) {
-//                var smile = document.getElementById("smile_img").src;
-//                console.log(smile);
-//            }
-////            else if (  (score > 900) && (score <= 1150) ){
-////            }else if (  (score > 1150) && (score <1500) ){
-////
-////            }else if( score >= 1500){
-////
-////            }
-
+            if (score <= 900) {
+                var dv = document.getElementById('smile_img');
+                dv.src =  "./img/uhoh.png";
+            }else if (  (score > 900) && (score <= 1150) ){
+                var dv = document.getElementById('smile_img');
+                dv.src =  "./img/neutral.png";
+            }else if (  (score > 1150) && (score <1500) ){
+                var dv = document.getElementById('smile_img');
+                dv.src =  "./img/ok.png";
+            }else if( score >= 1500){
+                var dv = document.getElementById('smile_img');
+                dv.src =  "./img/cool-smiley.png";
+            }
         }
 
         //get Device id,type list for user
-        DeviceAPI.query({username:username}, function success(devices){
-            $scope.devices=devices;
-            console.log(devices[0])
-        })
+//        DeviceAPI.query({username:username}, function success(devices){
+//            $scope.devices=devices;
+//            console.log(devices[0])
+//        })
 
     };
     controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams', '$timeout', 'Device'];
