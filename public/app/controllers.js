@@ -35,6 +35,7 @@ define(function () {
             $scope.event = message.data;
             if (event.event == "UPDATE_CONF_SCORE") {
                 $scope.score = event.score;
+                $scope.scoreItems=event.subScores;
                 changeSmile($scope.score)
                 if (event.score > 2000) {
                     $scope.success = true;
@@ -51,24 +52,24 @@ define(function () {
         var lips = document.getElementById('lips');
         function changeSmile(score) {
 
-            console.log(score)
-            score= score/20;
-            var lh = lips.style.height, slide = 0;
-            if ((50 - score) > 0) {
-                slide = (50 - score);
-                lips.style.borderTop = "2px black solid";
-                lips.style.borderBottom = "none";
-            }
-            else {
-                slide = (score - 50);
-                lips.style.borderBottom = "2px black solid";
-                lips.style.borderTop = "none";
-            }
-            lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
+            //console.log(score)
+            //score= score/20;
+            //var lh = lips.style.height, slide = 0;
+            //if ((50 - score) > 0) {
+            //    slide = (50 - score);
+            //    lips.style.borderTop = "2px black solid";
+            //    lips.style.borderBottom = "none";
+            //}
+            //else {
+            //    slide = (score - 50);
+            //    lips.style.borderBottom = "2px black solid";
+            //    lips.style.borderTop = "none";
+            //}
+            //lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
         }
 
         //get Device id,type list for user
-        DeviceAPI.query({username:username}, function success(devices){
+        DeviceAPI.query({username:username, scorecriteria:true}, function success(devices){
             $scope.devices=devices;
             console.log(devices[0])
         })

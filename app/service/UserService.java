@@ -5,11 +5,14 @@ import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import exception.AuthException;
+import model.Score;
 import model.User;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -66,5 +69,7 @@ public class UserService extends DataService {
         long modifiedCount = collection.updateOne(new Document("userId", id), new Document("$set", userDoc)).getModifiedCount();
         return modifiedCount > 0;
     }
+
+
 
 }

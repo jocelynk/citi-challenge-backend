@@ -1,8 +1,10 @@
 package service;
 
 import com.mongodb.client.FindIterable;
+import model.AuthConfidence;
 import model.BaseModel;
 import model.Device;
+import model.Score;
 import org.bson.Document;
 
 import java.sql.Array;
@@ -14,18 +16,18 @@ import static com.mongodb.client.model.Filters.eq;
 /**
  * Created by sasinda on 10/22/15.
  */
-public class DeviceService extends DataService{
+public class DeviceService extends DataService {
 
 
     public Document createDevice(Device d) {
-        Document doc=asDocument(d);
+        Document doc = asDocument(d);
         db.getCollection("Device").insertOne(doc);
         return doc;
     }
 
     public Document createDevices(List<Device> devices) {
-        List<Document> list=new ArrayList<Document>();
-        Document deviceList=new Document("devices", list );
+        List<Document> list = new ArrayList<Document>();
+        Document deviceList = new Document("devices", list);
         deviceList.put("_id", "hack");
         for (Device device : devices) {
             Document device1 = createDevice(device);
@@ -38,16 +40,16 @@ public class DeviceService extends DataService{
         return as(Device.class, db.getCollection("Device").find(eq("deviceId", devId)).first());
     }
 
-    public List<Device> getDevicesByUser(String username){
+    public List<Device> getDevicesByUser(String username) {
         FindIterable<Document> documents = db.getCollection("Device").find(eq("username", username));
         return asList(Device.class, documents);
     }
 
-    public List<Device> getDevicesByUser(String username, boolean clean){
+    public List<Device> getDevicesByUser(String username, boolean clean) {
         FindIterable<Document> documents = db.getCollection("Device").find(eq("username", username));
         List<Device> devices = asList(Device.class, documents);
-        if(clean=true){
-            List<Device> cleaned=cleaned = new ArrayList<>();
+        if (clean = true) {
+            List<Device> cleaned = cleaned = new ArrayList<>();
             for (Device device : devices) {
                 cleaned.add(device.clear());
             }
@@ -57,8 +59,18 @@ public class DeviceService extends DataService{
     }
 
 
-    public <T extends BaseModel> List<T> asList(Class<T> type, FindIterable<Document> documents){
-        List<T> list=new ArrayList<>();
+    public List<Score> getScoreCriteriaByUser(String username) {
+        List<Device> devices = getDevicesByUser(username, true);
+        List<Score> scores = new ArrayList<>();
+        for (Device device : devices) {
+            scores.addAll(AuthConfidence.getScoreCriteria(device.getType(),device.getDeviceId()));
+        }
+        return scores;
+    }
+
+
+    public <T extends BaseModel> List<T> asList(Class<T> type, FindIterable<Document> documents) {
+        List<T> list = new ArrayList<>();
         for (Document document : documents) {
             T obj = as(type, document);
             list.add(obj);

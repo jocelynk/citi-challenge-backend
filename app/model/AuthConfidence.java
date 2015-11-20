@@ -5,6 +5,7 @@ import enums.DeviceType;
 
 import java.util.*;
 
+import static enums.DeviceType.*;
 import static model.Score.Type.*;
 
 /**
@@ -19,6 +20,10 @@ public class AuthConfidence {
     private boolean actionRequired=false;
     private boolean actionRequested=false;
     private boolean actionConfirmed=false;
+
+
+    public AuthConfidence() {
+    }
 
     public void addMessege(Message message){
         messages.add(message);
@@ -90,6 +95,7 @@ public class AuthConfidence {
             //Phone
 
              if(master!=null && regMaster!=null){
+                setScore(deviceId,0,ACTIVE);
                 if(master.getWifiSSID().equals(regMaster.getWifiSSID())){
                     val= random(225, 325);
                     setScore(deviceId,val,WIFI_SSID);
@@ -110,6 +116,21 @@ public class AuthConfidence {
         int score= (int) getCurrentScore();
         System.out.println("Score :"+score);
         return score;
+    }
+
+    public static List<Score> getScoreCriteria(DeviceType deviceType, String deviceId){
+        List<Score> criteria=new ArrayList<>();
+        if(deviceType== SMART_PHONE){
+            criteria.add(new Score(deviceId,deviceType,ACTIVE));
+            criteria.add(new Score(deviceId,deviceType,WIFI_SSID));
+            criteria.add(new Score(deviceId,deviceType,IP_ADDRESS));
+            criteria.add(new Score(deviceId,deviceType,BT_ADDRESS));
+        }else if(deviceType==BEACON){
+            criteria.add(new Score(deviceId,deviceType,ACTIVE));
+            criteria.add(new Score(deviceId,deviceType,PROX));
+            criteria.add(new Score(deviceId,deviceType,BT_ADDRESS));
+        }
+        return criteria;
     }
 
     private void setScore(String deviceId, double scoreVal, Score.Type scoreType, double proximity)  {
@@ -137,7 +158,7 @@ public class AuthConfidence {
     public static void main(String[] args) {
 
         Device regMaster=new Device();
-        regMaster.setType(DeviceType.SMART_PHONE);
+        regMaster.setType(SMART_PHONE);
         regMaster.setWifiSSID("ssid");
         regMaster.setBluetoothAddress("ABC");
         regMaster.setIpAddress("1235");
@@ -147,14 +168,14 @@ public class AuthConfidence {
         regBeacon.setDeviceId("ABC");
 
         Message master = new Message();
-        master.setDeviceType(DeviceType.SMART_PHONE);
+        master.setDeviceType(SMART_PHONE);
         master.setWifiSSID("ssid");
         master.setBluetoothAddress("ABC");
         master.setIpAddress("123");
         master.setOrigDevice(regMaster);
 
         Message beacon = new Message();
-        beacon.setDeviceType(DeviceType.BEACON);
+        beacon.setDeviceType(BEACON);
         beacon.setProximity(1);
         beacon.setBluetoothAddress("ABC");
         beacon.setDeviceId("ABC");
