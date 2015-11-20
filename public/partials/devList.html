@@ -7,8 +7,7 @@
         <div class="row">
             <div class="col-sm-6 padding-top-xl">
                 <div class="col-md-12 text-center">
-                    <img src="./img/cool-smiley.png" style="width:30%;height:30%;" class="text-center">
-
+                    <img id= "smile_img" src="./img/cool-smiley.png" style="width:30%;height:30%;" class="text-center">
                 </div>
                 <div class="col-md-12 text-center">
                     <h6 id="event">confidence score: {{score}}</h6>
@@ -29,12 +28,14 @@
             </div>
             <div class="col-sm-6 text-center padding-top-xl" id="devices">
 
-                <h2>Phone <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs"> </i></h2>
+                <h2 ng-repeat="device in devices">
+                    {{device.type.replace("_", " ")}} <i class="fa fa-tablet"></i> <i class="fa fa-fw fa-cogs"> </i>
+                </h2>
+
 
                 <div>
                 <h2>Beacon <i class="fa fa-ticket"></i> <i class="fa fa-fw fa-cogs"></i></h2>
                 </div>
-
                 <!--<h2>Step 3 <i class="fa fa-map-marker"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
 
                 <!--<h2>step 4 <i class="fa fa-wifi"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
