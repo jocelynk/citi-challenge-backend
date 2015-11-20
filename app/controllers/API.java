@@ -121,6 +121,7 @@ public class API extends Controller {
 
     public static Result getDeviceByUsername(String username) {
         List<Device> devicesByUser = devService.getDevicesByUser(username,true);
+//        if()
         return ok(Json.toJson(devicesByUser));
     }
 

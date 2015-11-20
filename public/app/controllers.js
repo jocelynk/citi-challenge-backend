@@ -34,9 +34,13 @@ define(function () {
             var event = JSON.parse(message.data);
             $scope.event = message.data;
             changeSmile2($scope.score);
+//          TODO get distance
+            changeBeacon($scope.score);
             if (event.event == "UPDATE_CONF_SCORE") {
-                $scope.score = event.score;
+                $scope.scope = event.score;
                 changeSmile2($scope.score)
+                //          TODO get distance
+//                changeBeacon($scope.score);
                 if (event.score > 2000) {
                     $scope.success = true;
                     $timeout(function () {
@@ -48,9 +52,47 @@ define(function () {
         };
         wsCon = ws;
 
-        //smiley face
-        var lips = document.getElementById('lips');
+//            TODO fix calcDistance based on actual distance values
+//      Should output distance as a value between 0 and 30
+        function calcDistance(distance){
+            if (distance == 0){
+                return 30
+            }else{
 
+            }
+        }
+
+        function calcColor(distance){
+//          assumes distance is a value between 0 and 30
+            var max = 30;
+//            a value between 0 and 10
+            var norm_d = (distance/max);
+            var r, g, b;
+            if(distance <= 10){
+                r = 24 + (15.6*norm_d);
+                g = 188;
+                b = 156 - (15.6*norm_d);
+            } else if( (distance>10) && (distance<=20) ){
+                r = 180 + (6.7*norm_d);
+                g = 188 + (6.7*norm_d);
+                b = 0;
+            } else if( distance<=30 ){
+                r = 247;
+                g = 255 - (25.5*norm_d) ;
+                b = 0;
+            }
+
+            return "rgb("+r+","+g+","+ b + ")";
+        }
+
+        function changeBeacon(distance){
+            var beacon = document.getElementById("beacon");
+            var person = document.getElementById("person");
+            beacon.style.paddingLeft = calcDistance(distance)+'px';
+//            console.log(beacon.style.paddingLeft);
+            beacon.style.color = calcColor(calcDistance(distance));
+
+        }
 
         function changeSmile2(score) {
             if (score <= 900) {

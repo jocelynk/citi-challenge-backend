@@ -1,12 +1,14 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import enums.DeviceType;
 
 /**
  * Created by sasinda on 11/19/15.
  */
 public class Score {
     private String deviceId;
+    private DeviceType deviceType;
     private double value;
     private Type scoreType;
     private double proximity;
@@ -23,6 +25,13 @@ public class Score {
         this.setValue(value);
         this.setScoreType(scoreType);
     }
+
+    public Score(String deviceId, DeviceType deviceType, Type scoreType) {
+        this.setDeviceId(deviceId);
+        this.setDeviceType(deviceType);
+        this.setScoreType(scoreType);
+    }
+
     @JsonIgnore
     public String getKey() {
         return getDeviceId() + "_" + getScoreType();
@@ -58,6 +67,14 @@ public class Score {
 
     public void setProximity(double proximity) {
         this.proximity = proximity;
+    }
+
+    public DeviceType getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(DeviceType deviceType) {
+        this.deviceType = deviceType;
     }
 
     public enum Type {
