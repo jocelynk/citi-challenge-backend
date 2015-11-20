@@ -52,14 +52,14 @@ define(function () {
         wsCon = ws;
 
         function calcDistance(distance) {
-            var dist=Math.max(0,(distance-1)*70)
+            var dist = Math.max(0, (distance - 1) * 70)
             return dist;
         }
 
         function calcColor(distance) {
             var r, g, b;
             if (distance == 1) {
-                r = 24 ;
+                r = 24;
                 g = 188;
                 b = 156;
             } else if ((distance > 1) && (distance <= 2)) {
@@ -106,7 +106,7 @@ define(function () {
             for (var i in scoreItems) {
                 var item = scoreItems[i];
                 $('#' + item.key).addClass('active').removeClass('inactive')
-                if (item.scoreType=='PROX') {
+                if (item.scoreType == 'PROX') {
                     changeBeacon(item.proximity);
                 }
 
@@ -116,6 +116,12 @@ define(function () {
         //get Device id,type list for user
         DeviceAPI.query({username: username, scorecriteria: true}, function success(devices) {
             $scope.devices = devices;
+            for (var i in devices) {
+                var device = devices[i];
+                $('[id^='+device.type+']').each(function(){
+
+                })
+            }
             console.log(devices[0])
         })
 
