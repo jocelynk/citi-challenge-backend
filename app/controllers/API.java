@@ -3,6 +3,7 @@ package controllers;
 
 import dto.DevicesDto;
 import exception.RESTException;
+import model.Device;
 import model.Login;
 import model.User;
 import org.bson.Document;
@@ -12,6 +13,8 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import service.DeviceService;
 import service.UserService;
+
+import java.util.List;
 
 import static play.data.Form.form;
 
@@ -116,5 +119,9 @@ public class API extends Controller {
         return play.mvc.Results.TODO;
     }
 
+    public static Result getDeviceByUsername(String username) {
+        List<Device> devicesByUser = devService.getDevicesByUser(username,true);
+        return ok(Json.toJson(devicesByUser));
+    }
 
 }

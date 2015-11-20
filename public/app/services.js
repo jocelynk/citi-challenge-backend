@@ -11,7 +11,7 @@ define(['angular'], function (angular) {
     angular.module('myApp.services', []).
         value('version', '0.21')
         .factory('Device', function ($resource) {
-            return $resource('/api/device/:name', {name: 'all'});
+            return $resource('/api/device/:devId/user/:username', {devId: '@devId', username:'@username'});
         })
         .factory('User', function ($resource) {
             return $resource('/api/user/:username', {userName: '@username'});

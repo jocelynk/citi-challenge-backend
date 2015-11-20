@@ -17,7 +17,7 @@ define(function () {
     };
     controllers.home.$inject = ['$scope', '$rootScope', '$cookies'];
 
-    controllers.devList = function ($scope, $cookies, $location, $routeParams, $timeout) {
+    controllers.devList = function ($scope, $cookies, $location, $routeParams, $timeout, DeviceAPI) {
         var username = $routeParams.username;
         var ws = new WebSocket('ws://localhost:9000/ws');
         ws.onopen = function () {
@@ -65,8 +65,15 @@ define(function () {
             }
             lips.style.top = "calc(70% + " + (-slide) * 0.2 + "px";
         }
+
+        //get Device id,type list for user
+        DeviceAPI.query({username:username}, function success(devices){
+            $scope.devices=devices;
+            console.log(devices[0])
+        })
+
     };
-    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams', '$timeout'];
+    controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams', '$timeout', 'Device'];
 
     controllers.qrCode = function ($scope, $cookies, Device) {
         var code = "{\"userId\":\"" + $cookies.get('username') + "\"}"

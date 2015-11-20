@@ -2,6 +2,7 @@ package dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import enums.DeviceType;
 import model.Device;
 import model.Score;
 import service.Util;
@@ -26,7 +27,7 @@ public class Message {
 
     //device specific
     private String deviceId;
-    private DevTypes deviceType; //BEACON, SMART_PHONE
+    private DeviceType deviceType; //BEACON, SMART_PHONE
     private String deviceName;
     private String bluetoothAddress;
     private String status;
@@ -52,10 +53,9 @@ public class Message {
     }
 
 
-    public enum DevTypes {
-        BEACON,
-        SMART_PHONE;
-    }
+
+
+
 
     public enum Event {
         OPEN,
@@ -147,11 +147,11 @@ public class Message {
         return this;
     }
 
-    public DevTypes getDeviceType() {
+    public DeviceType getDeviceType() {
         return deviceType;
     }
 
-    public Message setDeviceType(DevTypes deviceType) {
+    public Message setDeviceType(DeviceType deviceType) {
         this.deviceType = deviceType;
         return this;
     }

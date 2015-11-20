@@ -1,6 +1,7 @@
 package model;
 
 import dto.Message;
+import enums.DeviceType;
 
 import java.util.*;
 
@@ -74,13 +75,13 @@ public class AuthConfidence {
                 }
                 //adds scores for paired devices
                 //bluetooth address
-                if(beacon.getBluetoothAddress() ==regBeacon.bluetoothAddress){
+                if(beacon.getBluetoothAddress() == regBeacon.getBluetoothAddress()){
                     val= random(380, 480);
                     setScore(deviceId, val, BT_ADDRESS);
 
                 }
                 //devId
-                if(beacon.getDeviceId().equals(regBeacon.deviceId)){
+                if(beacon.getDeviceId().equals(regBeacon.getDeviceId())){
                     val= random(175, 275);
                     setScore(deviceId, val, ACTIVE);
                 }
@@ -89,15 +90,15 @@ public class AuthConfidence {
             //Phone
 
              if(master!=null && regMaster!=null){
-                if(master.getWifiSSID().equals(regMaster.wifiSSID)){
+                if(master.getWifiSSID().equals(regMaster.getWifiSSID())){
                     val= random(225, 325);
                     setScore(deviceId,val,WIFI_SSID);
                 }
-                if(master.getIpAddress().equals(regMaster.ipAddress)){
+                if(master.getIpAddress().equals(regMaster.getIpAddress())){
                     val=random(100,200);
                     setScore(deviceId,val,IP_ADDRESS);
                 }
-                if(master.getBluetoothAddress() ==regMaster.bluetoothAddress) {
+                if(master.getBluetoothAddress() == regMaster.getBluetoothAddress()) {
                     val=random(300,400);
                     setScore(deviceId,val,BT_ADDRESS);
                 }
@@ -136,24 +137,24 @@ public class AuthConfidence {
     public static void main(String[] args) {
 
         Device regMaster=new Device();
-        regMaster.type="master";
-        regMaster.wifiSSID="ssid";
-        regMaster.bluetoothAddress="ABC";
-        regMaster.ipAddress="1235";
+        regMaster.setType(DeviceType.SMART_PHONE);
+        regMaster.setWifiSSID("ssid");
+        regMaster.setBluetoothAddress("ABC");
+        regMaster.setIpAddress("1235");
 
         Device regBeacon = new Device();
-        regBeacon.bluetoothAddress="ABC";
-        regBeacon.deviceId="ABC";
+        regBeacon.setBluetoothAddress("ABC");
+        regBeacon.setDeviceId("ABC");
 
         Message master = new Message();
-        master.setDeviceType(Message.DevTypes.SMART_PHONE);
+        master.setDeviceType(DeviceType.SMART_PHONE);
         master.setWifiSSID("ssid");
         master.setBluetoothAddress("ABC");
         master.setIpAddress("123");
         master.setOrigDevice(regMaster);
 
         Message beacon = new Message();
-        beacon.setDeviceType(Message.DevTypes.BEACON);
+        beacon.setDeviceType(DeviceType.BEACON);
         beacon.setProximity(1);
         beacon.setBluetoothAddress("ABC");
         beacon.setDeviceId("ABC");
