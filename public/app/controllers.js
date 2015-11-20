@@ -35,7 +35,7 @@ define(function () {
             $scope.event = message.data;
             if (event.event == "UPDATE_CONF_SCORE") {
                 $scope.score = event.score;
-                changeSmile($scope.score)
+                changeSmile2($scope.score)
                 if (event.score > 2000) {
                     $scope.success = true;
                     $timeout(function () {
@@ -68,10 +68,18 @@ define(function () {
 
 
         function changeSmile2(score) {
-            if () {
-
-            }
-
+            var smile = document.getElementById("smile_img").src;
+            console.log(smile);
+//            if (score <= 900) {
+//                var smile = document.getElementById("smile_img").src;
+//                console.log(smile);
+//            }
+////            else if (  (score > 900) && (score <= 1150) ){
+////            }else if (  (score > 1150) && (score <1500) ){
+////
+////            }else if( score >= 1500){
+////
+////            }
 
         }
 
