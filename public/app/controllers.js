@@ -138,14 +138,13 @@ define(function () {
 
     controllers.intercept = function (event, next, current, $rootScope, $location) {
 
-/*
         if (next.loginRequired) {
             if (!$rootScope.currentUser) {
                 var msg = null;
                 var nextPath = '/#/' + $location.path()
                 $location.path('login/').search({'redirect': nextPath, 'message': msg});
             }
-        }*/
+        }
     }
 
     return controllers;
