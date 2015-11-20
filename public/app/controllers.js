@@ -47,6 +47,7 @@ define(function () {
         };
         wsCon = ws;
 
+        //smiley face
         var lips = document.getElementById('lips');
         function changeSmile(score) {
 
