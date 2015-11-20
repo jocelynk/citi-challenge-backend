@@ -19,7 +19,7 @@ define(function () {
 
     controllers.devList = function ($scope, $cookies, $location, $routeParams, $timeout, DeviceAPI) {
         var username = $routeParams.username;
-        var ws = new WebSocket('ws://10.144.25.13:9000/ws');
+        var ws = new WebSocket('ws://localhost:9000/ws');
         ws.onopen = function () {
             ws.send('{ "event":"OPEN", "username":"' + username + '"}'); //First call OPEN event to initilize for this client
             ws.send('{ "event":"LOGIN_INIT", "username":"' + username + '"}')
@@ -33,14 +33,13 @@ define(function () {
             console.log('from server: ' + message.data);
             var event = JSON.parse(message.data);
             $scope.event = message.data;
-            changeSmile2($scope.score);
-//          TODO get distance
-            changeBeacon($scope.score);
+
+
             if (event.event == "UPDATE_CONF_SCORE") {
-                $scope.scope = event.score;
-                changeSmile2($scope.score)
-                //          TODO get distance
-//                changeBeacon($scope.score);
+                $scope.score = event.score;
+                $scope.scoreItems = event.subScores;
+                updateScoreList($scope);
+                changeSmile2($scope.score);
                 if (event.score > 2000) {
                     $scope.success = true;
                     $timeout(function () {
@@ -52,76 +51,73 @@ define(function () {
         };
         wsCon = ws;
 
-        function calcDistance(distance){
-            switch (distance) {
-                case 0:
-                    return 30;
-                    break;
-                case 1:
-                    return 0;
-                    break;
-                case 2:
-                    return 10;
-                    break;
-                case 3:
-                    return 20;
-                    break;
-            }
+        function calcDistance(distance) {
+            var dist=Math.max(0,(distance-1)*70)
+            return dist;
         }
 
-        function calcColor(distance){
-//          assumes distance is a value between 0 and 30
-            var max = 30;
-//            a value between 0 and 10
-            var norm_d = (distance/max);
+        function calcColor(distance) {
             var r, g, b;
-            if(distance <= 10){
-                r = 24 + (15.6*norm_d);
+            if (distance == 1) {
+                r = 24 ;
                 g = 188;
-                b = 156 - (15.6*norm_d);
-            } else if( (distance>10) && (distance<=20) ){
-                r = 180 + (6.7*norm_d);
-                g = 188 + (6.7*norm_d);
+                b = 156;
+            } else if ((distance > 1) && (distance <= 2)) {
+                r = 255;
+                g = 255
                 b = 0;
-            } else if( distance<=30 ){
-                r = 247;
-                g = 255 - (25.5*norm_d) ;
-                b = 0;
+            } else if (distance <= 3) {
+                r = 198;
+                g = 31;
+                b = 31;
             }
 
-            return "rgb("+r+","+g+","+ b + ")";
+            return "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        function changeBeacon(distance){
+        function changeBeacon(distance) {
             var beacon = document.getElementById("beacon");
             var person = document.getElementById("person");
-            beacon.style.paddingLeft = calcDistance(distance)+'px';
+            beacon.style.paddingLeft = calcDistance(distance) + 'px';
 //            console.log(beacon.style.paddingLeft);
-            beacon.style.color = calcColor(calcDistance(distance));
+            beacon.style.color = calcColor(distance);
+            person.style.color = calcColor(distance);
 
         }
 
         function changeSmile2(score) {
             if (score <= 900) {
                 var dv = document.getElementById('smile_img');
-                dv.src =  "./img/uhoh.png";
-            }else if (  (score > 900) && (score <= 1150) ){
+                dv.src = "./img/uhoh.png";
+            } else if ((score > 900) && (score <= 1150)) {
                 var dv = document.getElementById('smile_img');
-                dv.src =  "./img/neutral.png";
-            }else if (  (score > 1150) && (score <1500) ){
+                dv.src = "./img/neutral.png";
+            } else if ((score > 1150) && (score < 1500)) {
                 var dv = document.getElementById('smile_img');
-                dv.src =  "./img/ok.png";
-            }else if( score >= 1500){
+                dv.src = "./img/ok.png";
+            } else if (score >= 1500) {
                 var dv = document.getElementById('smile_img');
-                dv.src =  "./img/cool-smiley.png";
+                dv.src = "./img/cool-smiley.png";
+            }
+        }
+
+        function updateScoreList($scope) {
+            var scoreItems = $scope.scoreItems;
+            for (var i in scoreItems) {
+                var item = scoreItems[i];
+                $('#' + item.key).addClass('active').removeClass('inactive')
+                if (item.scoreType=='PROX') {
+                    changeBeacon(item.proximity);
+                }
+
             }
         }
 
         //get Device id,type list for user
-//        DeviceAPI.query({username:username}, function success(devices){
-//            $scope.devices=devices;
-//            console.log(devices[0])
-//        })
+        DeviceAPI.query({username: username, scorecriteria: true}, function success(devices) {
+            $scope.devices = devices;
+            console.log(devices[0])
+        })
 
     };
     controllers.devList.$inject = ['$scope', '$cookies', '$location', '$routeParams', '$timeout', 'Device'];

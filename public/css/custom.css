@@ -132,6 +132,20 @@ div.corner {
     box-shadow:0 1px 0 #cfcfcf;
 }
 
+.device.active, .device.inactive{
+    color: white;
+}
+.inactive{
+    color:darkgray;
+}
+.active{
+    color: #18bc9c;
+}
+
+.active i.fa-heartbeat {
+    color: #18bc9c;
+}
+
 .padding-top-xl {
     padding-top:50px;
 }

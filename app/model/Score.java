@@ -32,7 +32,6 @@ public class Score {
         this.setScoreType(scoreType);
     }
 
-    @JsonIgnore
     public String getKey() {
         return getDeviceId() + "_" + getScoreType();
     }
