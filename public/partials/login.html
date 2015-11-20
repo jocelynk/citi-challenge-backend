@@ -1,25 +1,27 @@
-<section class="success" id="about">
+<section class="login" id="about">
     <div class="container-fluid">
-        <div class="row">
-            <img src="./img/Citi.png" class="text-center">
-        </div>
-        <div class="row" >
-            <div class="col-md-offset-1 col-md-9 " id="steps">
-                <form class="form-signin"ng-submit="authenticate()">
+
+        <div class="row padding-top-sm">
+            <div class="col-md-offset-5 col-md-3 form-login" id="steps">
+
+                <div class="row">
+                    <img src="./img/Citi.png" style="width:50%;"class="text-center">
+                </div>
+                <form class=""ng-submit="authenticate()">
                     <fieldset>
-                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <h3 class="form-signin-heading">Please sign in</h3>
 
                     <div class="form-group row">
-                        <label class="col-md-1 control-label" for="username">username</label>
-                        <div class="col-md-4">
+                        <label class="col-md-3 control-label" for="username">username</label>
+                        <div class="col-md-9">
                             <input id="username" name="username" type="text" placeholder="username" class="form-control input-md" ng-model="user.username">
                         </div>
                     </div>
 
                     <!-- Password input-->
                     <div class="form-group row" ng-hide="passiveAuth">
-                        <label class="col-md-1 control-label" for="password">Password</label>
-                        <div class="col-md-4">
+                        <label class="col-md-3 control-label" for="password">Password</label>
+                        <div class="col-md-9">
                             <input id="password" name="password" type="password" placeholder="password" class="form-control input-md" value="test" ng-model="user.password">
                         </div>
                     </div>
@@ -31,7 +33,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-outline" style="color : white">
+                    <button type="submit" class="btn btn-outline" style="border-color:cadetblue; color:cadetblue">
                         Sign in
                     </button>
                     <a class="btn btn-outline" style="border-color:cadetblue; color:cadetblue" href="/#/register"> Register</a>

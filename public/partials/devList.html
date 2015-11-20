@@ -1,27 +1,40 @@
 <!-- DevList -->
 
-<section class="success" id="about">
+<section class="authenticate" id="about" style="height:600px">
     <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-sm-6 " id="steps">
-
-                <div id='slimey'>
-                    <div id='leye' class='eye'></div>
-                    <div id='reye' class='eye'></div>
-                    <div id='lips'></div>
-                    <!--<input id="smileSlide" type="range" onchange="changeSmile(this)" value="0"/>-->
-                </div>
-
-
-
-
-            </div>
-        </div>
-        <hr/>
         <!--ng-repeat="device in devices"-->
         <div class="row">
-            <div class="col-sm-6 " id="devices">
+            <div class="col-sm-6 center-block">
+                <div class="col-md-12 center">
+                    <div class="col-sm-4 " id="steps">
+
+                        <div id='slimey'>
+                            <div id='leye' class='eye'></div>
+                            <div id='reye' class='eye'></div>
+                            <div id='lips'></div>
+                            <!--<input id="smileSlide" type="range" onchange="changeSmile(this)" value="0"/>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 center">
+                    <h6 id="event">confidence score: {{score}}</h6>
+
+                    <div id="success" style="display: none">
+                        <h2>"Successfully signed in"</h2>
+
+                        <h3>"2 out of 2 devices authenticated "</h3>
+                    </div>
+                    <div id="fail" style="display: none" ng-show="score > 2000">
+                        <h2>"Successfully Authenticated"</h2>
+
+                        <h3>"2 out of 2 steps passed :)"</h3>
+                        <!--<h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>-->
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-6 center" id="devices">
 
                 <h2>Phone <i class="fa fa-tablet"></i> <i class="fa  fa-fw fa-cogs"> </i></h2>
 
@@ -33,22 +46,8 @@
 
                 <!--<h2>step 5 <i class="fa fa-apple"></i> <i class="fa fa-fw fa-cogs"></i></h2>-->
             </div>
-            <div class="col-sm-6">
-                <h6 id="event">confidence score: {{score}}</h6>
-
-                <div id="success" style="display: none">
-                    <h2>"Successfully signed in"</h2>
-
-                    <h3>"2 out of 2 devices authenticated "</h3>
-                </div>
-                <div id="fail" style="display: none" ng-show="score > 2000">
-                    <h2>"Successfully Authenticated"</h2>
-
-                    <h3>"2 out of 2 steps passed :)"</h3>
-                    <!--<h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>-->
-                </div>
-            </div>
         </div>
+
 
     </div>
 </section>
