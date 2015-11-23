@@ -36,20 +36,24 @@ define(function () {
 
 
             if (event.event == "UPDATE_CONF_SCORE") {
+                $scope.success = event.authSuccess;
                 $scope.score = event.score;
                 $scope.scoreItems = event.subScores;
                 updateScoreList($scope);
                 changeSmile2($scope.score);
-                if (event.authSuccess ==true) {
-                    $scope.success = true;
+                if (event.authSuccess == true) {
                     $timeout(function () {
                         $location.path("/myAccount2")
-                    }, 3000)
+                    }, 500)
                 }
                 $scope.$apply()
             }
         };
         wsCon = ws;
+
+        $('#smile_img').click(function (event) {
+            wsCon.send('{ "event":"LOGIN_INIT", "username":"' + username + '"}')
+        })
 
         function calcDistance(distance) {
             var dist = Math.max(0, (distance - 1) * 70)
@@ -89,13 +93,13 @@ define(function () {
             if (score <= 900) {
                 var dv = document.getElementById('smile_img');
                 dv.src = "./img/uhoh.png";
-            } else if ((score > 900) && (score <= 1150)) {
+            } else if ((score > 900) && (score <= 1000)) {
                 var dv = document.getElementById('smile_img');
                 dv.src = "./img/neutral.png";
-            } else if ((score > 1150) && (score < 1500)) {
+            } else if ((score > 1000) && (score < 1400)) {
                 var dv = document.getElementById('smile_img');
                 dv.src = "./img/ok.png";
-            } else if (score >= 1500) {
+            } else if (score >= 1400) {
                 var dv = document.getElementById('smile_img');
                 dv.src = "./img/cool-smiley.png";
             }

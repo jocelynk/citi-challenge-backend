@@ -12,15 +12,9 @@
                 <div class="col-md-12 text-center">
                     <h6 id="event">confidence score: {{score}}</h6>
 
-                    <div id="success" style="display: none">
-                        <h2>"Successfully signed in"</h2>
-
-                        <h3>"2 out of 2 devices authenticated "</h3>
-                    </div>
-                    <div id="fail" style="display: none" ng-show="score > 2000">
+                    <div id="success"  ng-show="score>1000">
                         <h2>"Successfully Authenticated"</h2>
-
-                        <h3>"2 out of 2 steps passed :)"</h3>
+                        <h3> Please confirm on your mobile to continue </h3>
                         <!--<h5>Having trouble? ... request for an One time password, to your email <i class="fa fa-cc"></i></h5>-->
                     </div>
                 </div>

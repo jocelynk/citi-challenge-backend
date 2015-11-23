@@ -33,7 +33,7 @@ public class AuthConfidence {
     public int updateConfidenceScore(Message message){
         int score = calculateConfidenceScore(message);
         confidenceScore=score;
-        if(getConfidenceScore() >300 ){
+        if(getConfidenceScore() >1000 ){
             setActionRequired(true);
         }
         return confidenceScore;
