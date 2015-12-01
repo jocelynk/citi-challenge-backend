@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 import model.BaseModel;
 import org.bson.Document;
+import play.Play;
 import play.libs.Json;
 
 import java.io.IOException;
@@ -16,8 +18,16 @@ import java.io.IOException;
  * Created by sasinda on 10/22/15.
  */
 public class DataService {
-    MongoClient mongoClient = new MongoClient("localhost");
-    MongoDatabase db = mongoClient.getDatabase("citiauth");
+
+
+    final static String dburi= Play.application().configuration().getString("mongodb.uri");
+    final static String dbName= Play.application().configuration().getString("mongodb.name");
+    final static MongoClientURI uri = new MongoClientURI(dburi);
+
+    //connection
+    final static public MongoClient mongoClient = new MongoClient(uri);
+    final static MongoDatabase db = mongoClient.getDatabase(dbName);
+
     private static ObjectMapper mapper =new ObjectMapper();
 
 
