@@ -56,7 +56,7 @@ define(function () {
         })
 
         function calcDistance(distance) {
-            var dist = Math.max(0, (distance - 1) * 70)
+            var dist = Math.max(0, (distance - 2) * 70)
             return dist;
         }
 
