@@ -75,7 +75,7 @@ public class AuthConfidence {
                 //proximity
                 if(beacon.getProximity() >0) {
                     double proximity= beacon.getProximity();
-                    val = Math.pow((10 - proximity * proximity),3) + random(130, 200);
+                    val = Math.pow((14.5 - proximity * proximity),3) + random(130, 200);
                     setScore(deviceId, val, PROX, proximity);
 
                 }
