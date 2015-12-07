@@ -111,7 +111,7 @@ define(function () {
                 var item = scoreItems[i];
                 $('#' + item.key).addClass('active').removeClass('inactive')
                 if (item.scoreType == 'PROX') {
-                    changeBeacon(item.proximity-1);
+                    changeBeacon(item.proximity);
                 }
 
             }
