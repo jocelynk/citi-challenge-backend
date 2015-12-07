@@ -19,7 +19,7 @@ define(function () {
 
     controllers.devList = function ($scope, $cookies, $location, $routeParams, $timeout, DeviceAPI) {
         var username = $routeParams.username;
-        var ws = new WebSocket('ws://localhost:9000/ws');
+        var ws = new WebSocket('ws://calm-sands-9581.herokuapp.com/ws');
         ws.onopen = function () {
             ws.send('{ "event":"OPEN", "username":"' + username + '"}'); //First call OPEN event to initilize for this client
             ws.send('{ "event":"LOGIN_INIT", "username":"' + username + '"}')
